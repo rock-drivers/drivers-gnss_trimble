@@ -1,0 +1,20 @@
+<package>
+  <description brief="Driver for GNSS board using the NMEA protocol">
+  This driver uses the NMEA protocol to comunicate to GNSS receivers. In particular for the BD970 Trimble receiver.
+  </description>
+  <author>Vassilios Tsounis/vastsoun@gmail.com</author>
+  <author>Javier Hidalgo Carrio/havyhidalgo@gmail.com</author>
+  <license>LGPL v2 or later</license>
+  <url>http://rock-robotics.org</url>
+
+  <depend package="base/cmake" />
+  <!--
+   To add any dependencies use the depend tag
+  <depend package="dummy-dependency-0" />
+	...
+  <depend package="dummy-dependency-n-1" />
+  <depend package="dummy-dependency-n" />
+  -->
+  <depend package="base/types" />
+  <depend package="drivers/iodrivers_base" />
+</package>
