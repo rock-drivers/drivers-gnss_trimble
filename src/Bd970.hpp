@@ -2,6 +2,7 @@
 #define _BD970_HPP_
 
 /** Std libraries **/
+#include <stdio.h>
 #include <iostream>
 
 /** Rock Std types **/

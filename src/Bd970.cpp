@@ -105,7 +105,7 @@ void Bd970::printBuffer ()
 
     for (register unsigned int i=0; i < (unsigned int)MAX_BUFFER_SIZE; i++)
     {
-        std::cout<< buffer[i]<<" ";
+        fprintf (stdout, "%02X ", buffer[i]);
     }
     std::cout<<"\nEND BUFFER.";
 
