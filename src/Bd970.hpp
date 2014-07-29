@@ -4,21 +4,37 @@
 /** Std libraries **/
 #include <iostream>
 
+/** Rock Std types **/
+#include <base/Time.hpp>
+
 /** IO Drivers library **/
 #include <iodrivers_base/Driver.hpp>
+
+
 
 namespace bd970
 {
 
-    static const unsigned int DEFAULT_SAMPLING_FREQUENCY = 1; //Selected by default as frequency in the firmware
+
+    static const uint8_t BEGIN_WORD = '$';
 
     class Bd970: public iodrivers_base::Driver
     {
+    private:
+        int const MAX_BUFFER_SIZE;
+        float const SAMPLING_FREQUENCY; //Selected by default as frequency in the firmware
+        uint8_t *buffer; /** Buffer with the current package **/
+
+    protected:
+
+        int	baudrate; /** Package baud rate **/
+        base::Time pckgTimeout; /** Estimate time to have a whole package **/
+
     public:
 
 
         /** Constructors **/
-        Bd970(int max_packet_size);
+        Bd970(int max_packet_size, float sampling_frequency);
         ~Bd970();
 
         /**
@@ -26,6 +42,15 @@ namespace bd970
         * \return nothing
         */
         void welcome();
+
+        /** Sets the device baudrate (only possible for serial devices). +brate+ is
+        * the baud rate in bps, can be one of 38400,
+        *
+        * If the device is not open yet, this baud rate will be set on startup (i.e.
+        * in open())
+        */
+        bool setBaudrate(int brate);
+
 
         /** Open the device, reset it and read device information.**/
         bool open(std::string const& filename);
@@ -38,12 +63,7 @@ namespace bd970
         */
         int processPacket();
 
-
-
-    protected:
-        int	baudrate; /** Package baud rate **/
-        int sampling_frequency; /** Sampling Frequency**/
-
+        void printBuffer ();
 
     };
 
