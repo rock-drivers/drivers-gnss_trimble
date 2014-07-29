@@ -17,7 +17,7 @@ namespace bd970
 {
 
 
-    static const uint8_t BEGIN_WORD = '$';
+    static const uint8_t BEGIN_WORD = 0x24;
 
     class Bd970: public iodrivers_base::Driver
     {

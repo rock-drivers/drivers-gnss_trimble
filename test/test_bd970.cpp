@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_CASE(it_should_not_crash_when_welcome_is_called)
     mybd970.welcome();
     mybd970.open("/dev/ttyXR0");
 
-    while (100)
+    for (register size_t i=0; i<10; i++)
     {
         mybd970.processPacket();
         mybd970.printBuffer();

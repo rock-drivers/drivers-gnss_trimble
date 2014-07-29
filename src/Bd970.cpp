@@ -8,7 +8,7 @@ Bd970::Bd970(int max_packet_size, float sampling_frequency)
 ,MAX_BUFFER_SIZE(max_packet_size)
 ,SAMPLING_FREQUENCY(sampling_frequency)
 ,buffer(new uint8_t[max_packet_size])
-,baudrate(iodrivers_base::Driver::SERIAL_921600)
+,baudrate(iodrivers_base::Driver::SERIAL_38400)
 {
     pckgTimeout = base::Time::fromSeconds(1.0/SAMPLING_FREQUENCY);
 
@@ -46,7 +46,7 @@ bool Bd970::setBaudrate(int brate)
 int Bd970::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 {
 
-    int packet_state = 0; //0-> no synchronized, 1->Semi synchonized, 2-> package found
+    int packet_state = 0;
     unsigned short start_position = 0;
 
 //    std::cout<<"**** extractPacket ****\n";
@@ -69,10 +69,6 @@ int Bd970::extractPacket(uint8_t const* buffer, size_t buffer_size) const
         return -buffer_size;
     else if (packet_state == 1)
     {
-        return -start_position;
-    }
-    else
-    {
         if (start_position > 0)
             return -start_position;
         else
@@ -89,7 +85,7 @@ int Bd970::processPacket()
     //std::cout<<"processPacket\n";
 
     try {
-        buf_size = Driver::readPacket (this->buffer, MAX_PACKET_SIZE, this->pckgTimeout);
+        buf_size = Driver::readPacket (this->buffer, MAX_BUFFER_SIZE, this->pckgTimeout);
     } catch (iodrivers_base::TimeoutError& e ) { 
 	std::cerr<<"TimeoutError buffer size: "<<buf_size<<"\n";
 	return false;
