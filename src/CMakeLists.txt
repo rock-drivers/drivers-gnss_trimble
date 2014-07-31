@@ -4,6 +4,6 @@ rock_library(bd970
     DEPS_PKGCONFIG iodrivers_base)
 
 
-#rock_executable(bd970_bin Main.cpp
-#    DEPS bd970)
+rock_executable(bd970_bin main.cpp
+    DEPS bd970)
 

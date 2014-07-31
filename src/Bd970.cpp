@@ -25,9 +25,7 @@ void Bd970::welcome()
 
 bool Bd970::open(const std::string& filename)
 {
-    if (! Driver::openSerial(filename, this->baudrate))
-        return false;
-    return true;
+    return Driver::openSerial(filename, this->baudrate);
 }
 
 Bd970::~Bd970()
@@ -103,6 +101,6 @@ void Bd970::printBuffer ()
     {
         fprintf (stdout, "%02X ", buffer[i]);
     }
-    std::cout<<"\nEND BUFFER.";
+    std::cout<<"\nEND BUFFER.\n";
 
 }
