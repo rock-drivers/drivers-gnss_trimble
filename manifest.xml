@@ -1,17 +1,19 @@
 <package>
-  <description brief="">
-  
+  <description brief="ROCK driver library for the BD970 GNSS receiver from Tribmle Ltd.">
+  This driver provides the interface for using the Tribmle bd90 receiver. The 
+  driver reads data sent by a GNSS receiver using NMEA protocol.
   </description>
-  <author>/</author>
-  <license></license>
-  <url>http://</url>
+  
+  <author>Vassilios Tsounis/vastsoun@gmail.com</author>
+  <author>Javier Hidalgo Carrio/havyhidalgo@gmail.com</author>
+  
+  <license>GPLv3</license>
+  
+  <url>http://rock-robotics.org</url>
   <logo>http://</logo>
+  
   <depend package="base/cmake" />
-  <!--
-   To add any dependencies use the depend tag
-  <depend package="dummy-dependency-0" />
-	...
-  <depend package="dummy-dependency-n-1" />
-  <depend package="dummy-dependency-n" />
-  -->
+  <depend package="base/types" />
+  <depend package="drivers/iodrivers_base" />
+  
 </package>
