@@ -226,6 +226,3 @@ int Bd970::closeNMEA (void)
 }
 
 
-/**
- * 
- */
