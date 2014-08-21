@@ -176,7 +176,7 @@ int Bd970::getNMEA (void)
                 packet_size = NmeaRxPort.readPacket (p_buffer, NmeaRxPort.MAX_BUFFER_SIZE, NmeaRxPort.m_timeout);
                 
                 nmea_len[i] = packet_size;
-                //printf("@%s, packet_size = %d\n", __FILE__, packet_size);
+                printf("@%s, packet_size = %d\n", __FILE__, packet_size);
             }
         } 
         
@@ -192,14 +192,9 @@ int Bd970::getNMEA (void)
     /** Reset the pointer to the beggining of the buffer **/
     p_buffer = NmeaRxPort.m_buffer;
     
-    
-    /** Extract the packet bundle into the corresponding NMEA types wrappers
-     * 
-     */
+    /** Extract the packet bundle into the corresponding NMEA types wrappers **/
     m_current_nmea.extractNMEA(p_buffer);
     
-    
-    /* TODO: Fix/Standardize return values */
     return 0;
 }
 

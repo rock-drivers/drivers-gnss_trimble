@@ -129,21 +129,6 @@ int SerialPort::extractPacket(uint8_t const* buffer, size_t buffer_size) const
     
     size_t i = 0;
     
-    /*
-    for (i = 0; i < buffer_size; ++i)
-    {
-        if (buffer[i] == '$')
-        {
-            printf("@%s, found '$' at buffer index: %d\n", __FILE__, i);
-        }
-        
-        if (buffer[i] == '\n')
-        {
-            printf("@%s, found '\\n' at buffer index: %d\n", __FILE__, i);
-        }
-    }
-    */
-    
     if (buffer[0] == '$')
     {
         //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
@@ -154,9 +139,6 @@ int SerialPort::extractPacket(uint8_t const* buffer, size_t buffer_size) const
             {
                 //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
                 
-                // do a bit more validation, we should have a checksum
-                // at the end of the message
- 
                 // Minimal message is $*FF\r\n
                 if (i < 5)
                 {

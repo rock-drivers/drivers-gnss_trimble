@@ -99,13 +99,13 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
 {
     uint8_t *temp = new uint8_t[message_len - 1];
     memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 1] = '\0';
+    temp[message_len - 2] = '\0';
     std::string input((char *)temp);
     delete temp;
     
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
-        
+    
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 0)
@@ -235,13 +235,13 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
 {
     uint8_t *temp = new uint8_t[message_len - 1];
     memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 1] = '\0';
+    temp[message_len - 2] = '\0';
     std::string input((char *)temp);
     delete temp;
     
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
-        
+    
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 1)
@@ -295,7 +295,7 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_AVR::printMessage(void)
 {
-    std::cout << "These are the found values: " << std::endl;
+    std::cout << "These are the AVR values: " << std::endl;
     std::cout << std::endl;
     
     std::cout << "UTC: " << utc << std::endl;
@@ -331,13 +331,13 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
 {
     uint8_t *temp = new uint8_t[message_len - 1];
     memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 1] = '\0';
+    temp[message_len - 2] = '\0';
     std::string input((char *)temp);
     delete temp;
     
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
-        
+    
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 0)
@@ -371,7 +371,7 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_HDT::printMessage(void)
 {
-    std::cout << "These are the found values: " << std::endl;
+    std::cout << "These are the HDT values: " << std::endl;
     std::cout << std::endl;
     
     std::cout << "HEADING: " << heading << std::endl;
@@ -395,7 +395,6 @@ NMEA_Messages::NMEA_Messages(void)
 {
     /* TODO: ADD MESSAGES HERE */
     
-    
     m_rx_time = base::Time::now();
     m_tx_time = base::Time::now();
     
@@ -413,12 +412,15 @@ int NMEA_Messages::extractNMEA(uint8_t *buffer)
 {
     m_rx_time = base::Time::now();
     
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     uint8_t *p_buffer = buffer;
     data_gga.extractMessage(p_buffer, m_message_lengths[0]);
     
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     p_buffer += m_message_lengths[0];
     data_avr.extractMessage(p_buffer, m_message_lengths[1]);
     
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     p_buffer += m_message_lengths[1];
     data_hdt.extractMessage(p_buffer, m_message_lengths[2]);
     
