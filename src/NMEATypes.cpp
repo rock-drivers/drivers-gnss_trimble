@@ -87,7 +87,7 @@ NMEA_GGA::NMEA_GGA(void)
     , geoid_separation(0)
     , dgps_age(-1)
     , ref_station_id(-1)
-    , checksum("~")
+    , checksum(0)
 {
 }
 
@@ -178,8 +178,9 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
         
         if(i == 15)
         {
-            //TODO: use: int i_hex = std::stoi (str_hex, 0,16);
-            checksum = SplitVec[i];
+            std::stringstream str;
+            str << SplitVec[i];
+            str >> std::hex >> checksum;
         }
     }
     
@@ -223,7 +224,7 @@ NMEA_AVR::NMEA_AVR(void)
     , gps_quality(0)
     , pdop(0)
     , num_sat_vehicles(0)
-    , checksum("~")
+    , checksum(0)
 {
 }
 
@@ -284,8 +285,9 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
         
         if(i == 13)
         {
-            //TODO: use: int i_hex = std::stoi (str_hex, 0,16);
-            checksum = SplitVec[i];
+            std::stringstream str;
+            str << SplitVec[i];
+            str >> std::hex >> checksum;
         }
     }
     
@@ -319,7 +321,7 @@ NMEA_HDT::NMEA_HDT(void)
     : NMEA_Base(-1, 3)
     , heading(0)
     , heading_dir("~")
-    , checksum("~")
+    , checksum(0)
 {
 }
 
@@ -360,8 +362,9 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
         
         if(i == 3)
         {
-            //TODO: use: int i_hex = std::stoi (str_hex, 0,16);
-            checksum = SplitVec[i];
+            std::stringstream str;
+            str << SplitVec[i];
+            str >> std::hex >> checksum;
         }
     }
     

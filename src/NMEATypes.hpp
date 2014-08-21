@@ -84,7 +84,7 @@ namespace trimble_bd970
             double      dgps_age;
             int         ref_station_id;
             
-            std::string checksum;
+            int checksum;
             
             
             NMEA_GGA(void);
@@ -113,7 +113,7 @@ namespace trimble_bd970
             double      pdop;
             int         num_sat_vehicles;
             
-            std::string checksum;
+            int checksum;
             
             
             NMEA_AVR(void);
@@ -135,7 +135,7 @@ namespace trimble_bd970
             double      heading;
             std::string heading_dir;
             
-            std::string checksum;
+            int checksum;
             
             
             NMEA_HDT(void);

@@ -77,13 +77,9 @@ namespace trimble_bd970
             //
             //SerialPort          NmeaRxPort;
             
-            //RTK_Messages      m_current_rtk;
-            //
-            //SerialPort        RtkTxPort;
-            
-            
         public:
-        
+            
+            /* TODO: remove from public */
             NMEA_Messages       m_current_nmea;
             
             SerialPort          NmeaRxPort;
@@ -108,15 +104,6 @@ namespace trimble_bd970
             int printBufferNMEA (void);
             
             int closeNMEA (void);
-            
-            
-            //int setupRTK (std::string const& filename, int baudrate);
-            //
-            //int getRTK (void);
-            //
-            //int sendRTK (void);
-            //
-            //int printRTK (void);
             
     };
     
