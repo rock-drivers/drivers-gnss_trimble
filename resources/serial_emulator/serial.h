@@ -54,9 +54,15 @@
 #define OK  0 /**< Integer value in order to return when everything is all right. */
 #define ERROR   -1 /**< Integer value in order to return when an error occur. */
 
-#define MESSAGE_NMEA_GGA "$GPGGA,184622.00,0001.123000000,N,00004.56700000,E,0,00,0.0,0.000,M,0.000,M,,*56\r\n"
-#define MESSAGE_NMEA_AVR "$PTNL,AVR,184622.00,+1.2345,Yaw,+6.7890,Tilt,,,0.100,0,0.1,01*3C\r\n"
-#define MESSAGE_NMEA_HDT "$GPHDT,0,T*4F\r\n"
+//#define MESSAGE_NMEA_GGA "$GPGGA,184622.00,0001.123000000,N,00004.56700000,E,0,00,0.0,0.000,M,0.000,M,,*56\r\n"
+//#define MESSAGE_NMEA_AVR "$PTNL,AVR,184622.00,+1.2345,Yaw,+6.7890,Tilt,,,0.100,0,0.1,01*3C\r\n"
+//#define MESSAGE_NMEA_HDT "$GPHDT,0,T*4F\r\n"
+
+#define MESSAGE_NMEA_GGA "$GPGGA,175531.00,5213.04972353,N,00425.39647688,E,5,09,1.5,3.350,M,43.231,M,1.0,0000*4E\r\n"
+#define MESSAGE_NMEA_AVR "$PTNL,AVR,175531.00,+37.7687,Yaw,-44.3654,Tilt,,,0.868,2,2.7,09*33\r\n"
+#define MESSAGE_NMEA_HDT "$GPHDT,,*4F\r\n"
+
+
 
 #define PORT_BD970_USB      "/dev/ttyUSB0"
 #define PORT_BD970_EXOTER   "/dev/ttyXR0"
