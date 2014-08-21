@@ -40,10 +40,6 @@
 
 
 
-/** NMEA Constant Definitions **/
-#define FIELD_SEPARATOR     ','
-
-
 /** CONFIGURATIONS 
  *  
  *  This must be modified to the number of desired NMEA messages from receiver.
@@ -57,6 +53,20 @@
  */
 namespace trimble_bd970
 {
+    
+    /**
+     * 
+     * 
+     */
+    enum NMEA_TAG
+    {
+        NULL      = 0,
+        GGA       = 1,
+        PTNL_AVR  = 2,
+        HDT       = 3
+    }
+    
+    
     /**
      * 
      * 
@@ -83,8 +93,6 @@ namespace trimble_bd970
             double      geoid_separation;
             double      dgps_age;
             int         ref_station_id;
-            
-            int checksum;
             
             
             NMEA_GGA(void);
@@ -113,8 +121,6 @@ namespace trimble_bd970
             double      pdop;
             int         num_sat_vehicles;
             
-            int checksum;
-            
             
             NMEA_AVR(void);
             
@@ -135,8 +141,6 @@ namespace trimble_bd970
             double      heading;
             std::string heading_dir;
             
-            int checksum;
-            
             
             NMEA_HDT(void);
             
@@ -154,7 +158,7 @@ namespace trimble_bd970
      * 
      * 
      */
-    
+    /*
     class NMEA_Messages
     {
         public:
@@ -166,12 +170,11 @@ namespace trimble_bd970
             base::Time  m_rx_time;
             base::Time  m_tx_time;
             
-            /** Message Data **/
             NMEA_GGA data_gga;
-            //NMEA_GST data_gst;
+            NMEA_GST data_gst;
             NMEA_AVR data_avr;
             NMEA_HDT data_hdt;
-            //NMEA_GSA data_gsa;
+            NMEA_GSA data_gsa;
             
             
             NMEA_Messages(void);
@@ -184,6 +187,7 @@ namespace trimble_bd970
             int printMessages(void);
         
     };
+    */
 }
 
 #endif // _BD970_NMEA_TYPES_HPP_

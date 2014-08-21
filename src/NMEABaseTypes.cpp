@@ -36,6 +36,85 @@ NMEA_Base::NMEA_Base(int message_len, int field_num)
 {
 }
 
+
 NMEA_Base::~NMEA_Base(void)
 {
+}
+
+
+
+/**
+* 
+*/
+NMEA_Messages::NMEA_Messages(void)
+    : m_rx_time(base::Time::now())
+    , m_tx_time(base::Time::now())
+    , m_number_messages(NMEA_MESSAGE_NUM)
+    , m_message_lengths(0)
+    , mp_messages(0)
+{
+    this->m_message_lengths = new int[NMEA_MESSAGE_NUM];
+    
+    //this->mp_messages = new ? 
+    
+}
+
+
+NMEA_Messages::~NMEA_Messages(void)
+{
+    /* TODO: ADD MESSAGES HERE */
+    
+    delete this->m_message_lengths;
+}
+
+
+
+int NMEA_Messages::tagIdentifier(uint8_t *buffer)
+{
+    
+    
+    
+    
+    
+    
+    return 0;
+}
+
+
+int NMEA_Messages::extractNMEA(uint8_t *buffer)
+{
+    m_rx_time = base::Time::now();
+    
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    uint8_t *p_buffer = buffer;
+    data_gga.extractMessage(p_buffer, m_message_lengths[0]);
+    
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    p_buffer += m_message_lengths[0];
+    data_avr.extractMessage(p_buffer, m_message_lengths[1]);
+    
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    p_buffer += m_message_lengths[1];
+    data_hdt.extractMessage(p_buffer, m_message_lengths[2]);
+    
+    m_tx_time = base::Time::now();
+    
+    return 0;
+}
+
+
+int NMEA_Messages::printMessages(void)
+{
+    for (int i = 0; i < m_number_messages;
+    
+    
+    data_gga.printMessage();
+    data_avr.printMessage();
+    data_hdt.printMessage();
+    
+    int64_t process_time = m_tx_time.toMicroseconds() - m_rx_time.toMicroseconds();
+    
+    std::cout << "NMEA processing time (usec) is: " << process_time << std::endl;
+    
+    return 0;
 }

@@ -56,12 +56,48 @@ namespace trimble_bd970
             int m_message_len;
             int m_field_num;
             
+            int checksum;
+            
             NMEA_Base(int message_len, int filed_num);
             virtual ~NMEA_Base(void);
             
             virtual int extractMessage(uint8_t *buffer, int message_len) = 0;
             virtual int printMessage(void) = 0;
             
+    };
+    
+    
+    /**
+     * 
+     * 
+     */
+    
+    class NMEA_Messages
+    {
+        public:
+            
+            base::Time  m_rx_time;
+            base::Time  m_tx_time;
+            
+            
+            int m_number_messages;
+            
+            int *m_message_lengths;
+            
+            NMEA_Base *mp_messages;
+            
+            
+            NMEA_Messages(void);
+            
+            ~NMEA_Messages(void);
+            
+            
+            int tagIdentifier(uint8_t *buffer);
+            
+            int extractNMEA(uint8_t *buffer);
+            
+            int printMessages(void);
+        
     };
 }
 
