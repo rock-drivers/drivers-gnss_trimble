@@ -62,32 +62,60 @@ NMEA_Base::~NMEA_Base(void)
 }
 
 
-int NMEA_Base::checksumTest (std::string& message, int cur_checksum)
+std::string NMEA_Base::getMessageStr(uint8_t *buffer, int message_len) const
 {
+    uint8_t *temp = new uint8_t[message_len - 1];
+    memcpy(temp, buffer, (message_len - 1));
+    temp[message_len - 2] = '\0';
+    std::string message((char *)temp);
+    delete temp;
+    
+    return message;
+}
+
+
+int NMEA_Base::checksumTest (std::string& message, 
+                             std::string& cur_checksum, 
+                             std::string const message_type)
+{
+    /** get the cheksum as an integer **/
+    int hex_checksum;
+    std::stringstream str;
+    str << cur_checksum;
+    str >> std::hex >> hex_checksum;
+    
+    /** modify string to remove characters not included in sum **/
     int astr_pos = message.find_last_of('*');
-    
     std::string temp = message.substr(1, (astr_pos - 1));
-    
     int substr_size = temp.size();
     
+    /** compute the sum as an XOR between all characters **/
     int i, sum = 0;
-    
     for (i = 0; i < substr_size; ++i)
     {
         sum ^= (int)temp[i];
     }
     
-    //DEBUG helper prints
-    //std::cout << "Checksum is: " << cur_checksum << std::endl;
+    /** DEBUG helper prints **/
+    //std::cout << "Checksum is: " << hex_checksum << std::endl;
     //std::cout << "sum: " << sum << std::endl;
     //std::cout << "temp is: " << temp << std::endl;
     
-    if (sum == cur_checksum)
+    /** test to see if the values are correct **/
+    if (sum != hex_checksum)
     {
-        return 0;
+        /* data is incorrect */
+        std::cout << "NMEA_" << message_type  << ": checksum error" << std::endl;
+        return -1;
+    }
+    else
+    {
+        checksum = hex_checksum;
     }
     
-    return -1;
+    
+    /* data is correct */
+    return 0;
 }
 
 

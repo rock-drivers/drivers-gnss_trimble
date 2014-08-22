@@ -97,31 +97,17 @@ NMEA_GGA::~NMEA_GGA(void)
 int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
 {
     /** prepare the std::string type for processing **/
-    uint8_t *temp = new uint8_t[message_len - 1];
-    memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 2] = '\0';
-    std::string input((char *)temp);
-    delete temp;
+    std::string input =  getMessageStr(buffer, message_len);
     
     /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
     
     /** checksum test **/
-    int temp_checksum;
-    std::stringstream str;
-    str << SplitVec[15];
-    str >> std::hex >> temp_checksum;
-    int check_test = checksumTest(input, temp_checksum);
-    
-    if (check_test != 0)
+    int test = checksumTest (input, SplitVec[15], "GGA");
+    if (test != 0)
     {
-        std::cout << "NMEA_GGA: checksum error" << std::endl;
         return 1;
-    }
-    else
-    {
-        checksum = temp_checksum;
     }
     
     /** message data extraction **/
@@ -247,31 +233,17 @@ NMEA_AVR::~NMEA_AVR(void)
 int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
 {
     /** prepare the std::string type for processing **/
-    uint8_t *temp = new uint8_t[message_len - 1];
-    memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 2] = '\0';
-    std::string input((char *)temp);
-    delete temp;
+    std::string input =  getMessageStr(buffer, message_len);
     
     /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
     
     /** checksum test **/
-    int temp_checksum;
-    std::stringstream str;
-    str << SplitVec[13];
-    str >> std::hex >> temp_checksum;
-    int check_test = checksumTest(input, temp_checksum);
-    
-    if (check_test != 0)
+    int test = checksumTest (input, SplitVec[13], "AVR");
+    if (test != 0)
     {
-        std::cout << "NMEA_AVR: checksum error" << std::endl;
         return 1;
-    }
-    else
-    {
-        checksum = temp_checksum;
     }
     
     /** message data extraction **/
@@ -356,31 +328,17 @@ NMEA_HDT::~NMEA_HDT(void)
 int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
 {
     /** prepare the std::string type for processing **/
-    uint8_t *temp = new uint8_t[message_len - 1];
-    memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 2] = '\0';
-    std::string input((char *)temp);
-    delete temp;
+    std::string input =  getMessageStr(buffer, message_len);
     
     /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
     
     /** checksum test **/
-    int temp_checksum;
-    std::stringstream str;
-    str << SplitVec[3];
-    str >> std::hex >> temp_checksum;
-    int check_test = checksumTest(input, temp_checksum);
-    
-    if (check_test != 0)
+    int test = checksumTest (input, SplitVec[3], "HDT");
+    if (test != 0)
     {
-        std::cout << "NMEA_HDT: checksum error" << std::endl;
         return 1;
-    }
-    else
-    {
-        checksum = temp_checksum;
     }
     
     /** message data extraction **/
