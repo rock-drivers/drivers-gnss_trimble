@@ -68,7 +68,7 @@ namespace trimble_bd970
             NMEA_Base(int message_len, int filed_num);
             virtual ~NMEA_Base(void);
             
-            virtual int checksumTest (std::string message, int checksum);
+            virtual int checksumTest (std::string& message, int checksum);
             virtual int extractMessage (uint8_t *buffer, int message_len) = 0;
             virtual int printMessage (void) = 0;
             

@@ -22,10 +22,29 @@
  */
 
 
-/** NMEA Types Header **/
+/** NMEA Base Types Header **/
 #include <trimble_bd970/NMEABaseTypes.hpp>
 
+/** Std C Libraries **/
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+/** Std C++ Libraries **/
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+
+/** Boost C++ Libraries **/
+#include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 using namespace trimble_bd970;
+using namespace std;
 
 /**
 * 
@@ -43,14 +62,32 @@ NMEA_Base::~NMEA_Base(void)
 }
 
 
-int NMEA_Base::checksumTest (std::string message, int checksum)
+int NMEA_Base::checksumTest (std::string& message, int cur_checksum)
 {
+    int astr_pos = message.find_last_of('*');
     
+    std::string temp = message.substr(1, (astr_pos - 1));
     
+    int substr_size = temp.size();
     
+    int i, sum = 0;
     
+    for (i = 0; i < substr_size; ++i)
+    {
+        sum ^= (int)temp[i];
+    }
     
-    return 0;
+    //DEBUG helper prints
+    //std::cout << "Checksum is: " << cur_checksum << std::endl;
+    //std::cout << "sum: " << sum << std::endl;
+    //std::cout << "temp is: " << temp << std::endl;
+    
+    if (sum == cur_checksum)
+    {
+        return 0;
+    }
+    
+    return -1;
 }
 
 

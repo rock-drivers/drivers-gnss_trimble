@@ -96,15 +96,35 @@ NMEA_GGA::~NMEA_GGA(void)
 
 int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
 {
+    /** prepare the std::string type for processing **/
     uint8_t *temp = new uint8_t[message_len - 1];
     memcpy(temp, buffer, (message_len - 1));
     temp[message_len - 2] = '\0';
     std::string input((char *)temp);
     delete temp;
     
+    /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
     
+    /** checksum test **/
+    int temp_checksum;
+    std::stringstream str;
+    str << SplitVec[15];
+    str >> std::hex >> temp_checksum;
+    int check_test = checksumTest(input, temp_checksum);
+    
+    if (check_test != 0)
+    {
+        std::cout << "NMEA_GGA: checksum error" << std::endl;
+        return 1;
+    }
+    else
+    {
+        checksum = temp_checksum;
+    }
+    
+    /** message data extraction **/
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 0)
@@ -112,6 +132,7 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
             if(SplitVec[i].compare("$GPGGA") != 0)
             {
                 std::runtime_error("NMEA_GGA: packet given is not GPGGA.");
+                return -1;
             }
         }
         
@@ -174,13 +195,6 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
         {
             ref_station_id = atoi(SplitVec[i].c_str());
         }
-        
-        if(i == 15)
-        {
-            std::stringstream str;
-            str << SplitVec[i];
-            str >> std::hex >> checksum;
-        }
     }
     
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
@@ -232,15 +246,35 @@ NMEA_AVR::~NMEA_AVR(void)
 
 int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
 {
+    /** prepare the std::string type for processing **/
     uint8_t *temp = new uint8_t[message_len - 1];
     memcpy(temp, buffer, (message_len - 1));
     temp[message_len - 2] = '\0';
     std::string input((char *)temp);
     delete temp;
     
+    /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
     
+    /** checksum test **/
+    int temp_checksum;
+    std::stringstream str;
+    str << SplitVec[13];
+    str >> std::hex >> temp_checksum;
+    int check_test = checksumTest(input, temp_checksum);
+    
+    if (check_test != 0)
+    {
+        std::cout << "NMEA_AVR: checksum error" << std::endl;
+        return 1;
+    }
+    else
+    {
+        checksum = temp_checksum;
+    }
+    
+    /** message data extraction **/
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 1)
@@ -279,13 +313,6 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
         if (i == 12)
         {
             pdop = strtod(SplitVec[i].c_str(), 0);
-        }
-        
-        if(i == 13)
-        {
-            std::stringstream str;
-            str << SplitVec[i];
-            str >> std::hex >> checksum;
         }
     }
     
@@ -328,15 +355,35 @@ NMEA_HDT::~NMEA_HDT(void)
 
 int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
 {
+    /** prepare the std::string type for processing **/
     uint8_t *temp = new uint8_t[message_len - 1];
     memcpy(temp, buffer, (message_len - 1));
     temp[message_len - 2] = '\0';
     std::string input((char *)temp);
     delete temp;
     
+    /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
     
+    /** checksum test **/
+    int temp_checksum;
+    std::stringstream str;
+    str << SplitVec[3];
+    str >> std::hex >> temp_checksum;
+    int check_test = checksumTest(input, temp_checksum);
+    
+    if (check_test != 0)
+    {
+        std::cout << "NMEA_HDT: checksum error" << std::endl;
+        return 1;
+    }
+    else
+    {
+        checksum = temp_checksum;
+    }
+    
+    /** message data extraction **/
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 0)
@@ -355,13 +402,6 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
         if (i == 2)
         {
              heading_dir = SplitVec[i];
-        }
-        
-        if(i == 3)
-        {
-            std::stringstream str;
-            str << SplitVec[i];
-            str >> std::hex >> checksum;
         }
     }
     
@@ -428,22 +468,23 @@ int NMEA_Messages::checkTag(uint8_t *buffer)
 
 int NMEA_Messages::extractNMEA(uint8_t *buffer)
 {
-    m_rx_time = base::Time::now();
+    int ret;
     
+    m_rx_time = base::Time::now();
     
     // TODO: setup ZDA + GST
     
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     uint8_t *p_buffer = buffer;
-    data_gga.extractMessage(p_buffer, m_message_lengths[0]);
+    ret = data_gga.extractMessage(p_buffer, m_message_lengths[0]);
     
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     p_buffer += m_message_lengths[0];
-    data_avr.extractMessage(p_buffer, m_message_lengths[1]);
+    ret = data_avr.extractMessage(p_buffer, m_message_lengths[1]);
     
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     p_buffer += m_message_lengths[1];
-    data_hdt.extractMessage(p_buffer, m_message_lengths[2]);
+    ret = data_hdt.extractMessage(p_buffer, m_message_lengths[2]);
     
     m_tx_time = base::Time::now();
     
