@@ -396,7 +396,6 @@ NMEA_GST::NMEA_GST(void)
     , latitude_sigma_error(0)
     , longitude_sigma_error(0)
     , height_sigma_error(0)
-    , checksum("~")
 {
 }
 
@@ -467,8 +466,9 @@ int NMEA_GST::extractMessage(uint8_t *buffer, int message_len)
 
         else if(i == 9)
         {
-            //TODO: use: int i_hex = std::stoi (str_hex, 0,16);
-            checksum = SplitVec[i];
+            std::stringstream str;
+            str << SplitVec[i];
+            str >> std::hex >> checksum;
         }
     }
 
@@ -508,7 +508,6 @@ NMEA_ZDA::NMEA_ZDA(void)
     , year(0)
     , gmt_hours_offset(0)
     , gmt_minutes_offset(0)
-    , checksum("~")
 {
 }
 
@@ -540,6 +539,33 @@ int NMEA_ZDA::extractMessage(uint8_t *buffer, int message_len)
         {
             utc = strtod(SplitVec[i].c_str(), 0);
         }
+        else if (i == 2)
+        {
+            day = atoi(SplitVec[i].c_str());
+        }
+        else if (i == 3)
+        {
+            month = atoi(SplitVec[i].c_str());
+        }
+        else if (i == 4)
+        {
+            year = atoi(SplitVec[i].c_str());
+        }
+        else if (i == 5)
+        {
+            gmt_hours_offset = atoi(SplitVec[i].c_str());
+        }
+        else if (i == 6)
+        {
+            gmt_minutes_offset = atoi(SplitVec[i].c_str());
+        }
+        else if (i == 7)
+        {
+            std::stringstream str;
+            str << SplitVec[i];
+            str >> std::hex >> checksum;
+
+        }
     }
 
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
@@ -553,6 +579,9 @@ int NMEA_ZDA::printMessage(void)
     std::cout << std::endl;
 
     std::cout << "UTC: " << utc << std::endl;
+    std::cout << "DAY " << day <<" MONTH "<< month <<" YEAR "<< year << std::endl;
+    std::cout << "GTM HOURS: " << gmt_hours_offset <<" MINUTES "<<gmt_minutes_offset  << std::endl;
+    std::cout << "CHKSM: " << checksum << std::endl;
 
     return 0;
 }

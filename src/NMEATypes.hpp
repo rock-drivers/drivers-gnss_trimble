@@ -176,9 +176,6 @@ namespace trimble_bd970
             double longitude_sigma_error; //1-sigma in meters
             double height_sigma_error; //1-sigma in meters
 
-            std::string checksum;
-
-
             NMEA_GST(void);
 
             ~NMEA_GST(void);
@@ -202,8 +199,6 @@ namespace trimble_bd970
 
             int  gmt_hours_offset;
             int  gmt_minutes_offset;
-
-            std::string checksum;
 
 
             NMEA_ZDA(void);
