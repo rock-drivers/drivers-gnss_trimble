@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(it_should_not_crash_when_welcome_is_called)
     
     for (register size_t i = 0; i < 10; i++)
     {
-        mybd970.getNMEA();
+        mybd970.processNMEA();
         mybd970.printBufferNMEA();
         
         mybd970.printNMEA();

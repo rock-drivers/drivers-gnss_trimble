@@ -207,7 +207,7 @@ void signal_terminator (int sig, void *values)
         std::cout<<"\nSIGSEGV: Segmentation\n";
     }
     
-    pdriver->NmeaRxPort.close();
+    pdriver->closeNMEA();
     std::cout<<"serial port closed correctly.\n";
     
     exit (status);
@@ -217,11 +217,9 @@ void signal_terminator (int sig, void *values)
 int main(int argc, char** argv)
 {
     Bd970 mybd970(512, 1.0);
-    
+
     handling_t pfunc;
-    
-    unsigned char buffer[512];  /* Input buffer has the size of a whole package */
-    
+
     if (argc < 2)
     {
         printf( "Usage: bd970_bin <device>\n");
@@ -233,26 +231,26 @@ int main(int argc, char** argv)
 
     /* Catching system signals */
     signal_catcher (SIGHUP,SIGINT,SIGTERM, SIGSEGV, pfunc, &mybd970);
-    
+
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     mybd970.setupNMEA(argv[1], 38400);
 
     for (register size_t i=0; i < 100; ++i)
     {
         sleep(1);
-        
+
         //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
-        mybd970.getNMEA();
-        
+        mybd970.processNMEA();
+
         //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
         mybd970.printBufferNMEA();
-        
+
         //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
         mybd970.printNMEA();
     }
-    
+
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     mybd970.closeNMEA();
-    
+
     return 0;
 }
