@@ -84,12 +84,13 @@ namespace trimble_bd970
             
             int *m_message_lengths;
             
-            NMEA_Base *mp_messages;
+            std::vector<NMEA_Base::mp_message> mp_messages;
+            //NMEA_Base *mp_messages;
             
             
             NMEA_Messages(void);
             
-            ~NMEA_Messages(void);
+            virtual ~NMEA_Messages(void);
             
             
             int tagIdentifier(uint8_t *buffer);

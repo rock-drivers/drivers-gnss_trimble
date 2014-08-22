@@ -75,7 +75,10 @@ namespace trimble_bd970
     class NMEA_GGA : public NMEA_Base
     {
         public:
-        
+            
+            boost::shared_ptr<NMEA_GGA> mp_message;
+            
+            
             /** Message Data **/
             double      utc;
             
@@ -108,6 +111,8 @@ namespace trimble_bd970
     
     class NMEA_AVR : public NMEA_Base
     {
+        boost::shared_ptr<NMEA_AVR> mp_message;
+        
         public:
             
             /** Message Data **/
@@ -136,6 +141,9 @@ namespace trimble_bd970
     class NMEA_HDT : public NMEA_Base
     {
         public:
+            
+            boost::shared_ptr<NMEA_HDT> mp_message;
+            
             
             /** Message Data **/
             double      heading;

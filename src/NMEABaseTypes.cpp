@@ -55,6 +55,8 @@ NMEA_Messages::NMEA_Messages(void)
 {
     this->m_message_lengths = new int[NMEA_MESSAGE_NUM];
     
+    //shared_ptr<T> static_pointer_cast(shared_ptr<U> const & r);
+    
     //this->mp_messages = new ? 
     
 }
