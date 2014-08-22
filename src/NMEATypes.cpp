@@ -582,6 +582,7 @@ int NMEA_ZDA::printMessage(void)
     std::cout << "DAY " << day <<" MONTH "<< month <<" YEAR "<< year << std::endl;
     std::cout << "GTM HOURS: " << gmt_hours_offset <<" MINUTES "<<gmt_minutes_offset  << std::endl;
     std::cout << "CHKSM: " << checksum << std::endl;
+    std::cout << std::endl;
 
     return 0;
 }
@@ -660,8 +661,8 @@ int NMEA_Messages::printMessages(void)
     data_gga.printMessage();
     data_gst.printMessage();
     data_avr.printMessage();
-    data_hdt.printMessage();
     data_zda.printMessage();
+    data_hdt.printMessage();
 
     int64_t process_time = m_tx_time.toMicroseconds() - m_rx_time.toMicroseconds();
 

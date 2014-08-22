@@ -240,8 +240,8 @@ namespace trimble_bd970
             NMEA_GGA data_gga;
             NMEA_GST data_gst;
             NMEA_AVR data_avr;
-            NMEA_HDT data_hdt;
             NMEA_ZDA data_zda;
+            NMEA_HDT data_hdt;
 
 
             NMEA_Messages(void);
