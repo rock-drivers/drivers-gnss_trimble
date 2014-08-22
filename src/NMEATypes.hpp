@@ -36,7 +36,6 @@
 
 /** BD970 Driver Types **/
 #include <trimble_bd970/NMEABaseTypes.hpp>
-#include <trimble_bd970/Config.hpp>
 
 
 
@@ -60,24 +59,23 @@ namespace trimble_bd970
      */
     enum NMEA_TAG
     {
-        NULL      = 0,
+        MSG_NULL  = 0,
         GGA       = 1,
         PTNL_AVR  = 2,
         HDT       = 3
-    }
+    };
     
     
     /**
      * 
      * 
      */
-    
+     
     class NMEA_GGA : public NMEA_Base
     {
         public:
             
-            boost::shared_ptr<NMEA_GGA> mp_message;
-            
+            //boost::shared_ptr<NMEA_GGA> mp_message;
             
             /** Message Data **/
             double      utc;
@@ -111,9 +109,9 @@ namespace trimble_bd970
     
     class NMEA_AVR : public NMEA_Base
     {
-        boost::shared_ptr<NMEA_AVR> mp_message;
-        
         public:
+            
+            //boost::shared_ptr<NMEA_AVR> mp_message;
             
             /** Message Data **/
             double      utc;
@@ -142,8 +140,7 @@ namespace trimble_bd970
     {
         public:
             
-            boost::shared_ptr<NMEA_HDT> mp_message;
-            
+            //boost::shared_ptr<NMEA_HDT> mp_message;
             
             /** Message Data **/
             double      heading;
@@ -162,40 +159,49 @@ namespace trimble_bd970
     };
     
     
-    /**
-     * 
-     * 
+    
+    
+    /** 
+     *  
+     *  
+     *  
      */
-    /*
     class NMEA_Messages
     {
         public:
             
-            int m_number_messages;
-            
-            int *m_message_lengths;
-            
             base::Time  m_rx_time;
             base::Time  m_tx_time;
             
+            int m_number_messages;
+            int *m_message_lengths;
+            
+            
+            // TODO: Dynaimc Messages
+            //std::vector<NMEA_Base::mp_message> mp_messages;
+            //NMEA_Base *mp_messages;
+            
+            // Messages (Static)
             NMEA_GGA data_gga;
-            NMEA_GST data_gst;
+            //NMEA_GST data_gst;
             NMEA_AVR data_avr;
             NMEA_HDT data_hdt;
-            NMEA_GSA data_gsa;
+            //NMEA_ZDA data_zda;
             
             
             NMEA_Messages(void);
             
-            ~NMEA_Messages(void);
+            virtual ~NMEA_Messages(void);
             
+            
+            int checkTag(uint8_t *buffer);
             
             int extractNMEA(uint8_t *buffer);
             
             int printMessages(void);
         
     };
-    */
+    
 }
 
 #endif // _BD970_NMEA_TYPES_HPP_

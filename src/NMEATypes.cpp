@@ -87,7 +87,6 @@ NMEA_GGA::NMEA_GGA(void)
     , geoid_separation(0)
     , dgps_age(-1)
     , ref_station_id(-1)
-    , checksum(0)
 {
 }
 
@@ -224,7 +223,6 @@ NMEA_AVR::NMEA_AVR(void)
     , gps_quality(0)
     , pdop(0)
     , num_sat_vehicles(0)
-    , checksum(0)
 {
 }
 
@@ -321,7 +319,6 @@ NMEA_HDT::NMEA_HDT(void)
     : NMEA_Base(-1, 3)
     , heading(0)
     , heading_dir("~")
-    , checksum(0)
 {
 }
 
@@ -381,6 +378,91 @@ int NMEA_HDT::printMessage(void)
     std::cout << "HDIR: " << heading_dir << std::endl;
     std::cout << "CHKSM: " << checksum << std::endl;
     std::cout << std::endl;
+    
+    return 0;
+}
+
+
+
+
+/* TODO: Put these in NMEABaseTypes.hpp when message generalization
+ *       for dynamic message generation will be implemented.
+ * 
+ */
+NMEA_Messages::NMEA_Messages(void)
+    : m_rx_time(base::Time::now())
+    , m_tx_time(base::Time::now())
+    , m_number_messages(NMEA_MESSAGE_NUM)
+    , m_message_lengths(0)
+    //, mp_messages(0)
+    , data_gga()
+    , data_avr()
+    , data_hdt()
+{
+    this->m_message_lengths = new int[NMEA_MESSAGE_NUM];
+    
+    //shared_ptr<T> static_pointer_cast(shared_ptr<U> const & r);
+    
+    //this->mp_messages = new ? 
+    
+}
+
+
+NMEA_Messages::~NMEA_Messages(void)
+{
+    // TODO: ADD MESSAGES HERE
+    
+    delete this->m_message_lengths;
+}
+
+
+
+int NMEA_Messages::checkTag(uint8_t *buffer)
+{
+    // TODO
+    
+    
+    return 0;
+}
+
+
+int NMEA_Messages::extractNMEA(uint8_t *buffer)
+{
+    m_rx_time = base::Time::now();
+    
+    
+    // TODO: setup ZDA + GST
+    
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    uint8_t *p_buffer = buffer;
+    data_gga.extractMessage(p_buffer, m_message_lengths[0]);
+    
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    p_buffer += m_message_lengths[0];
+    data_avr.extractMessage(p_buffer, m_message_lengths[1]);
+    
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    p_buffer += m_message_lengths[1];
+    data_hdt.extractMessage(p_buffer, m_message_lengths[2]);
+    
+    m_tx_time = base::Time::now();
+    
+    return 0;
+}
+
+
+int NMEA_Messages::printMessages(void)
+{
+    //for (int i = 0; i < m_number_messages);
+    
+    // TODO: setup ZDA + GST
+    data_gga.printMessage();
+    data_avr.printMessage();
+    data_hdt.printMessage();
+    
+    int64_t process_time = m_tx_time.toMicroseconds() - m_rx_time.toMicroseconds();
+    
+    std::cout << "NMEA processing time (usec) is: " << process_time << std::endl;
     
     return 0;
 }

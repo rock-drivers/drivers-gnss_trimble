@@ -32,6 +32,13 @@
 /** Std C Libraries **/
 #include <stdint.h>
 
+/** Rock Std types **/
+#include <base/Time.hpp>
+
+/** BD970 Driver Types **/
+#include <trimble_bd970/Config.hpp>
+
+
 
 /**
  * 
@@ -72,20 +79,27 @@ namespace trimble_bd970
      * 
      */
     
-    class NMEA_Messages
+    /*class NMEA_Messages
     {
         public:
             
             base::Time  m_rx_time;
             base::Time  m_tx_time;
             
-            
             int m_number_messages;
-            
             int *m_message_lengths;
             
-            std::vector<NMEA_Base::mp_message> mp_messages;
+            
+            // TODO: Dynaimc Messages
+            //std::vector<NMEA_Base::mp_message> mp_messages;
             //NMEA_Base *mp_messages;
+            
+            // Messages (Static)
+            NMEA_GGA data_gga;
+            //NMEA_GST data_gst;
+            NMEA_AVR data_avr;
+            NMEA_HDT data_hdt;
+            //NMEA_ZDA data_zda;
             
             
             NMEA_Messages(void);
@@ -93,13 +107,13 @@ namespace trimble_bd970
             virtual ~NMEA_Messages(void);
             
             
-            int tagIdentifier(uint8_t *buffer);
+            int checkTag(uint8_t *buffer);
             
             int extractNMEA(uint8_t *buffer);
             
             int printMessages(void);
         
-    };
+    };*/
 }
 
 #endif // _BD970_NMEA_BASE_TYPES_HPP_
