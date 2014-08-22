@@ -43,6 +43,17 @@ NMEA_Base::~NMEA_Base(void)
 }
 
 
+int NMEA_Base::checksumTest (std::string message, int checksum)
+{
+    
+    
+    
+    
+    
+    return 0;
+}
+
+
 
 /**
 *  
