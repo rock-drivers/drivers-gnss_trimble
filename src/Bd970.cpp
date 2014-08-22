@@ -125,76 +125,77 @@ int Bd970::setupNMEA (std::string const& filename, int baudrate)
     return 0;
 }
 
-int Bd970::getNMEA (void)
+int Bd970::processNMEA (void)
 {
-    
+
     int i = 0;
     int packet_size = 0;
-    
+
     uint8_t data_tag[16] = {0};
     int start_tag_found = 0;
-    
+
     int num_msg = m_current_nmea.m_number_messages;
     int *nmea_len = m_current_nmea.m_message_lengths;
-    
+
     uint8_t *p_buffer;
     p_buffer = NmeaRxPort.m_buffer;
-    
-    
+
+
     /** Find the correct packet bundle and place it in the ports outer buffer.
      * 
      */
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
-    
+
     for (i = 0; i < num_msg; ++i)
     {
         //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
-        
+
         try 
         {
             if (start_tag_found == 0)
             {
                 //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
-                
+
                 while (strcmp((const char *)data_tag, "$GPGGA") != 0)
                 {
                     packet_size = NmeaRxPort.readPacket (p_buffer, NmeaRxPort.MAX_BUFFER_SIZE, NmeaRxPort.m_timeout);
                     memcpy(data_tag, p_buffer, 6);
-                    
+
                     //printf("@%s, packet_size = %d\n", __FILE__, packet_size);
                 }
-                
+
                 nmea_len[0] = packet_size;
-                
+
                 start_tag_found = 1;
             }
-            
+
             else
             {
                 //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
-                
+
                 packet_size = NmeaRxPort.readPacket (p_buffer, NmeaRxPort.MAX_BUFFER_SIZE, NmeaRxPort.m_timeout);
-                
+
                 nmea_len[i] = packet_size;
-                printf("@%s, packet_size = %d\n", __FILE__, packet_size);
+                //printf("@%s, packet_size = %d\n", __FILE__, packet_size);
             }
         } 
-        
+
         catch (iodrivers_base::TimeoutError& e ) 
         {
             std::cerr << "TimeoutError buffer size: " << packet_size << "\n";
             return -1;
         }
-        
+
         p_buffer += packet_size; 
     }
-    
+
     /** Reset the pointer to the beggining of the buffer **/
     p_buffer = NmeaRxPort.m_buffer;
-    
-    /** Extract the packet bundle into the corresponding NMEA types wrappers **/
+
+
+    /** Extract the packet bundle into the corresponding NMEA types wrappers */
     m_current_nmea.extractNMEA(p_buffer);
-    
+
     return 0;
 }
 
@@ -202,21 +203,57 @@ int Bd970::printNMEA (void)
 {
     std::cout << "The current NMEA messages are: " << std::endl;
     m_current_nmea.printMessages();
-    
+
     return 0;
+}
+
+trimble_bd970::Time Bd970::getTime(void)
+{
+    trimble_bd970::Time current_time;
+
+    /** Parse the NMEA UTC time into base Time **/
+    double fractpart, intpart;
+    fractpart = modf(m_current_nmea.data_zda.utc, &intpart);
+
+    /** Integer forms **/
+    std::vector<int> utc_int_parts;
+    int int_hh_mm_ss = static_cast<int>(intpart);
+    int int_millis = static_cast<int>(fractpart * 1000.00);
+
+    /** Split digits (hours, minutes, and seconds) **/
+    utc_int_parts.insert(utc_int_parts.begin(), int_hh_mm_ss % 100); //seconds
+    int_hh_mm_ss = int_hh_mm_ss / 100;
+
+    utc_int_parts.insert(utc_int_parts.begin(), int_hh_mm_ss % 100); //minutes
+    int_hh_mm_ss = int_hh_mm_ss / 100;
+
+    utc_int_parts.insert(utc_int_parts.begin(), int_hh_mm_ss % 100); //hours
+    int_hh_mm_ss = int_hh_mm_ss / 100;
+
+    base::Time utc_time;
+    utc_time.fromTimeValues(m_current_nmea.data_zda.year, m_current_nmea.data_zda.month,
+                            m_current_nmea.data_zda.day, utc_int_parts[0], utc_int_parts[1],
+                            utc_int_parts[2], int_millis, 0);
+
+    /** Store the times **/
+    current_time.gnss_time = utc_time;
+    current_time.cpu_time = base::Time::now();
+    current_time.processing_latency = m_current_nmea.process_time;
+
+    return current_time;
 }
 
 int Bd970::printBufferNMEA (void)
 {
     NmeaRxPort.printBuffer();
-    
+
     return 0;
 }
 
 int Bd970::closeNMEA (void)
 {
     NmeaRxPort.close();
-    
+
     return 0;
 }
 

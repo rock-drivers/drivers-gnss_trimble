@@ -35,12 +35,13 @@
 
 /** Rock Std types **/
 #include <base/Time.hpp>
-#include <base/samples/RigidBodyState.hpp>
 
 /** BD970 Driver Types **/
 #include <trimble_bd970/Config.hpp>
 #include <trimble_bd970/NMEATypes.hpp>
 #include <trimble_bd970/SerialPort.hpp>
+#include <trimble_bd970/GNSSTypes.hpp>
+#include <trimble_bd970/Bd970Types.hpp>
 
 //#include <ogr_spatialref.h>
 
@@ -67,46 +68,56 @@ namespace trimble_bd970
     class Bd970
     {
         private:
-            
+
             Config bd970Config;
-            
-            
+
+
         protected:
-            
-            //NMEA_Messages       m_current_nmea;
-            //
-            //SerialPort          NmeaRxPort;
-            
-        public:
-            
-            /* TODO: remove from public */
+
             NMEA_Messages       m_current_nmea;
-            
+
             SerialPort          NmeaRxPort;
-            
-            
+
+            //RTK_Messages      m_current_rtk;
+            //
+            //SerialPort        RtkTxPort;
+
+
+        public:
+
+
             Bd970(int max_packet_size, float sampling_frequency);
-            
+
             Bd970(const Config& config = Config());
-            
+
             ~Bd970(void);
-            
-            
+
+
             void Greeting (void);
-            
-            
+
+
             int setupNMEA (std::string const& filename, int baudrate);
-            
-            int getNMEA (void);
-            
+
+            int processNMEA (void);
+
             int printNMEA (void);
-            
+
+            trimble_bd970::Time getTime(void);
+
             int printBufferNMEA (void);
-            
+
             int closeNMEA (void);
-            
+
+            //int setupRTK (std::string const& filename, int baudrate);
+            //
+            //int getRTK (void);
+            //
+            //int sendRTK (void);
+            //
+            //int printRTK (void);
+
     };
-    
+
 } // end namespace bd970
 
 #endif // _BD970_HPP_

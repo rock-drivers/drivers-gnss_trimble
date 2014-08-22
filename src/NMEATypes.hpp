@@ -52,7 +52,7 @@
  */
 namespace trimble_bd970
 {
-    
+
     /**
      * 
      * 
@@ -64,103 +64,160 @@ namespace trimble_bd970
         PTNL_AVR  = 2,
         HDT       = 3
     };
-    
-    
+
+
     /**
      * 
      * 
      */
-     
+
     class NMEA_GGA : public NMEA_Base
     {
         public:
-            
+
             //boost::shared_ptr<NMEA_GGA> mp_message;
-            
+
             /** Message Data **/
             double      utc;
-            
+
             double      latitude;
             std::string lat_dir;
-            
+
             double      longtitude;
             std::string long_dir;
-            
+
             int         gps_quality;
             int         num_sat_vehicles;
             double      hdop;
-            
+
             double      orthom_height;
             double      geoid_separation;
             double      dgps_age;
             int         ref_station_id;
-            
-            
+
+
             NMEA_GGA(void);
-            
+
             ~NMEA_GGA(void);
-            
-            
+
+
             int extractMessage(uint8_t *buffer, int message_len);
-            
+
             int printMessage(void);
-        
+
     };
-    
+
     class NMEA_AVR : public NMEA_Base
     {
         public:
-            
+
             //boost::shared_ptr<NMEA_AVR> mp_message;
-            
+
             /** Message Data **/
             double      utc;
-            
+
             double      yaw;
             double      tilt;
-            
+
             double      range;
             int         gps_quality;
             double      pdop;
             int         num_sat_vehicles;
-            
-            
+
+
             NMEA_AVR(void);
-            
+
             ~NMEA_AVR(void);
-            
-            
+
+
             int extractMessage(uint8_t *buffer, int message_len);
-            
+
             int printMessage(void);
-        
+
     };
-    
+
     class NMEA_HDT : public NMEA_Base
     {
         public:
-            
+
             //boost::shared_ptr<NMEA_HDT> mp_message;
-            
+
             /** Message Data **/
             double      heading;
             std::string heading_dir;
-            
-            
+
+
             NMEA_HDT(void);
-            
+
             ~NMEA_HDT(void);
-            
-            
+
+
             int extractMessage(uint8_t *buffer, int message_len);
-            
+
             int printMessage(void);
-        
+
     };
-    
-    
-    
-    
+
+
+    class NMEA_GST : public NMEA_Base
+    {
+        public:
+
+            /** Message Data **/
+            double utc;
+            double rms;
+
+            double semi_major_axis_sigma_error; // 1-sigma in meters
+            double semi_minor_axis_sigma_error; // 1-sigma in meters
+
+            double heading_sigma_error; //1-sigma in degrees
+
+            double latitude_sigma_error; //1-sigma in meters
+            double longitude_sigma_error; //1-sigma in meters
+            double height_sigma_error; //1-sigma in meters
+
+            std::string checksum;
+
+
+            NMEA_GST(void);
+
+            ~NMEA_GST(void);
+
+
+            int extractMessage(uint8_t *buffer, int message_len);
+
+            int printMessage(void);
+
+    };
+
+    class NMEA_ZDA : public NMEA_Base
+    {
+        public:
+
+            /** Message Data **/
+            double utc;
+            int  day;
+            int  month;
+            int  year;
+
+            int  gmt_hours_offset;
+            int  gmt_minutes_offset;
+
+            std::string checksum;
+
+
+            NMEA_ZDA(void);
+
+            ~NMEA_ZDA(void);
+
+
+            int extractMessage(uint8_t *buffer, int message_len);
+
+            int printMessage(void);
+
+    };
+
+
     /** 
      *  
      *  
@@ -169,39 +226,41 @@ namespace trimble_bd970
     class NMEA_Messages
     {
         public:
-            
+
             base::Time  m_rx_time;
             base::Time  m_tx_time;
-            
+
             int m_number_messages;
+
             int *m_message_lengths;
-            
-            
+
+            int64_t process_time;
+
+
             // TODO: Dynaimc Messages
             //std::vector<NMEA_Base::mp_message> mp_messages;
             //NMEA_Base *mp_messages;
-            
-            // Messages (Static)
+
+            /** Message Data in the order given by the receiver **/
             NMEA_GGA data_gga;
-            //NMEA_GST data_gst;
+            NMEA_GST data_gst;
             NMEA_AVR data_avr;
             NMEA_HDT data_hdt;
-            //NMEA_ZDA data_zda;
-            
-            
+            NMEA_ZDA data_zda;
+
+
             NMEA_Messages(void);
-            
+
             virtual ~NMEA_Messages(void);
-            
-            
+
+
             int checkTag(uint8_t *buffer);
-            
+
             int extractNMEA(uint8_t *buffer);
-            
+
             int printMessages(void);
-        
+
     };
-    
 }
 
 #endif // _BD970_NMEA_TYPES_HPP_
