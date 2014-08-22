@@ -6,12 +6,12 @@
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
- *    
+ *
  *    This program is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- *    
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -23,6 +23,7 @@
 
 /** NMEA Types Header **/
 #include <trimble_bd970/NMEATypes.hpp>
+#include <trimble_bd970/GNSSTypes.hpp>
 
 /** Std C Libraries **/
 #include <stdio.h>
@@ -74,7 +75,7 @@ typedef vector< string > split_vector_type;
 * 
 */
 NMEA_GGA::NMEA_GGA(void)
-    : NMEA_Base(-1, 15)
+    : NMEA_Base(-1, NMEA_GGA::NUMBER_OF_FIELD)
     , utc(-1)
     , latitude(0)
     , lat_dir("~")
@@ -98,18 +99,18 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
 {
     /** prepare the std::string type for processing **/
     std::string input =  getMessageStr(buffer, message_len);
-    
+
     /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
-    
+
     /** checksum test **/
-    int test = checksumTest (input, SplitVec[15], "GGA");
+    int test = checksumTest (input, SplitVec[SplitVec.size()-1], "GGA");
     if (test != 0)
     {
         return 1;
     }
-    
+
     /** message data extraction **/
    for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
@@ -189,9 +190,9 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_GGA::printMessage(void)
 {
-    std::cout << "These are the found values: " << std::endl;
+    std::cout << "GGA Message values: " << std::endl;
     std::cout << std::endl;
-    
+
     std::cout << "UTC: " << utc << std::endl;
     std::cout << "LAT: " << latitude << std::endl;
     std::cout << "LATDIR: " << lat_dir << std::endl;
@@ -204,9 +205,9 @@ int NMEA_GGA::printMessage(void)
     std::cout << "GS: " << geoid_separation << std::endl;
     std::cout << "DGPS AGE: " << dgps_age << std::endl;
     std::cout << "REFST: " << ref_station_id << std::endl;
-    std::cout << "CHKSM: " << checksum << std::endl;
+    printf("CHKSM: %X\n", checksum);
     std::cout << std::endl;
-    
+
     return 0;
 }
 
@@ -215,7 +216,7 @@ int NMEA_GGA::printMessage(void)
 * 
 */
 NMEA_AVR::NMEA_AVR(void)
-    : NMEA_Base(-1, 12)
+    : NMEA_Base(-1,NMEA_AVR::NUMBER_OF_FIELD)
     , utc(0)
     , yaw(0)
     , tilt(0)
@@ -234,18 +235,18 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
 {
     /** prepare the std::string type for processing **/
     std::string input =  getMessageStr(buffer, message_len);
-    
+
     /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
-    
+
     /** checksum test **/
-    int test = checksumTest (input, SplitVec[13], "AVR");
+    int test = checksumTest (input, SplitVec[SplitVec.size()-1], "AVR");
     if (test != 0)
     {
         return 1;
     }
-    
+
     /** message data extraction **/
    for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
@@ -282,10 +283,15 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
             gps_quality = atoi(SplitVec[i].c_str());
         }
 
-        if (i == 12)
+        if (i == 11)
         {
             pdop = strtod(SplitVec[i].c_str(), 0);
         }
+        if (i == 12)
+        {
+            num_sat_vehicles = atoi(SplitVec[i].c_str());
+        }
+
     }
 
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
@@ -294,7 +300,7 @@ int NMEA_AVR::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_AVR::printMessage(void)
 {
-    std::cout << "These are the AVR values: " << std::endl;
+    std::cout << "AVR Message values: " << std::endl;
     std::cout << std::endl;
 
     std::cout << "UTC: " << utc << std::endl;
@@ -304,7 +310,7 @@ int NMEA_AVR::printMessage(void)
     std::cout << "GPS_QUAL: " << gps_quality << std::endl;
     std::cout << "PDOP: " << pdop << std::endl;
     std::cout << "SATs: " << num_sat_vehicles << std::endl;
-    std::cout << "CHKSM: " << checksum << std::endl;
+    printf("CHKSM: %X\n", checksum);
     std::cout << std::endl;
 
     return 0;
@@ -315,7 +321,7 @@ int NMEA_AVR::printMessage(void)
 * 
 */
 NMEA_HDT::NMEA_HDT(void)
-    : NMEA_Base(-1, 3)
+    : NMEA_Base(-1, NMEA_HDT::NUMBER_OF_FIELD)
     , heading(0)
     , heading_dir("~")
 {
@@ -329,18 +335,20 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
 {
     /** prepare the std::string type for processing **/
     std::string input =  getMessageStr(buffer, message_len);
-    
+
     /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
-    
+
+    std::cout<<"SplitVec.size(): "<<SplitVec.size()<<"\n";
+    std::cout<<"SplitVec contains "<<SplitVec[SplitVec.size()-1]<<"\n";
     /** checksum test **/
-    int test = checksumTest (input, SplitVec[3], "HDT");
+    int test = checksumTest (input, SplitVec[SplitVec.size()-1], "HDT");
     if (test != 0)
     {
         return 1;
     }
-    
+
     /** message data extraction **/
    for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
@@ -369,12 +377,12 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_HDT::printMessage(void)
 {
-    std::cout << "These are the HDT values: " << std::endl;
+    std::cout << "HDT Message values: " << std::endl;
     std::cout << std::endl;
 
     std::cout << "HEADING: " << heading << std::endl;
     std::cout << "HDIR: " << heading_dir << std::endl;
-    std::cout << "CHKSM: " << checksum << std::endl;
+    printf("CHKSM: %X\n", checksum);
     std::cout << std::endl;
 
     return 0;
@@ -385,7 +393,7 @@ int NMEA_HDT::printMessage(void)
 * NMEA_GST
 */
 NMEA_GST::NMEA_GST(void)
-    : NMEA_Base(-1, 3)
+    : NMEA_Base(-1, NMEA_GST::NUMBER_OF_FIELD)
     , utc(0)
     , rms(0)
     , semi_major_axis_sigma_error(0)
@@ -403,22 +411,29 @@ NMEA_GST::~NMEA_GST(void)
 
 int NMEA_GST::extractMessage(uint8_t *buffer, int message_len)
 {
-    uint8_t *temp = new uint8_t[message_len - 1];
-    memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 2] = '\0';
-    std::string input((char *)temp);
-    delete temp;
 
+    /** prepare the std::string type for processing **/
+    std::string input =  getMessageStr(buffer, message_len);
+
+    /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
 
+    /** checksum test **/
+    int test = checksumTest (input, SplitVec[SplitVec.size()-1], "GST");
+    if (test != 0)
+    {
+        return 1;
+    }
+
+    /** message data extraction **/
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 0)
         {
-            if(SplitVec[i].compare("$GPGST") != 0)
+            if(SplitVec[i].compare("$GNGST") != 0)
             {
-                std::runtime_error("NMEA_GST: packet given is not GPGST.");
+                std::runtime_error("NMEA_GST: packet given is not GNGST.");
             }
         }
 
@@ -477,7 +492,7 @@ int NMEA_GST::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_GST::printMessage(void)
 {
-    std::cout << "These are the found values: " << std::endl;
+    std::cout << "GST Message values: " << std::endl;
     std::cout << std::endl;
 
     std::cout << "UTC: " << utc << std::endl;
@@ -488,7 +503,7 @@ int NMEA_GST::printMessage(void)
     std::cout << "LATITUDE ERROR (1-SIGMA): " << latitude_sigma_error << std::endl;
     std::cout << "LONGITUDE ERROR (1-SIGMA): " << longitude_sigma_error << std::endl;
     std::cout << "HEIGHT ERROR (1-SIGMA): " << height_sigma_error << std::endl;
-    std::cout << "CHKSM: " << checksum << std::endl;
+    printf("CHKSM: %X\n", checksum);
     std::cout << std::endl;
 
     return 0;
@@ -499,7 +514,7 @@ int NMEA_GST::printMessage(void)
 * NMEA_ZDA
 */
 NMEA_ZDA::NMEA_ZDA(void)
-    : NMEA_Base(-1, 3)
+    : NMEA_Base(-1, NMEA_ZDA::NUMBER_OF_FIELD)
     , utc(0)
     , day(0)
     , month(0)
@@ -515,20 +530,27 @@ NMEA_ZDA::~NMEA_ZDA(void)
 
 int NMEA_ZDA::extractMessage(uint8_t *buffer, int message_len)
 {
-    uint8_t *temp = new uint8_t[message_len - 1];
-    memcpy(temp, buffer, (message_len - 1));
-    temp[message_len - 2] = '\0';
-    std::string input((char *)temp);
-    delete temp;
 
+    /** prepare the std::string type for processing **/
+    std::string input =  getMessageStr(buffer, message_len);
+
+    /** split the message into fields **/
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
 
+    /** checksum test **/
+    int test = checksumTest (input, SplitVec[SplitVec.size()-1], "ZDA");
+    if (test != 0)
+    {
+        return 1;
+    }
+
+    /** message data extraction **/
     for(unsigned int i = 0; i < SplitVec.size(); ++i)
     {
         if(i == 0)
         {
-            if(SplitVec[i].compare("$GPGST") != 0)
+            if(SplitVec[i].compare("$GPZDA") != 0)
             {
                 std::runtime_error("NMEA_ZDA: packet given is not GPZDA.");
             }
@@ -573,13 +595,13 @@ int NMEA_ZDA::extractMessage(uint8_t *buffer, int message_len)
 
 int NMEA_ZDA::printMessage(void)
 {
-    std::cout << "These are the found values: " << std::endl;
+    std::cout << "ZDA Message values: " << std::endl;
     std::cout << std::endl;
 
     std::cout << "UTC: " << utc << std::endl;
     std::cout << "DAY " << day <<" MONTH "<< month <<" YEAR "<< year << std::endl;
     std::cout << "GTM HOURS: " << gmt_hours_offset <<" MINUTES "<<gmt_minutes_offset  << std::endl;
-    std::cout << "CHKSM: " << checksum << std::endl;
+    printf("CHKSM: %X\n", checksum);
     std::cout << std::endl;
 
     return 0;
@@ -601,18 +623,18 @@ NMEA_Messages::NMEA_Messages(void)
     , data_hdt()
 {
     this->m_message_lengths = new int[NMEA_MESSAGE_NUM];
-    
+
     //shared_ptr<T> static_pointer_cast(shared_ptr<U> const & r);
-    
+
     //this->mp_messages = new ? 
-    
+
 }
 
 
 NMEA_Messages::~NMEA_Messages(void)
 {
     // TODO: ADD MESSAGES HERE
-    
+
     delete this->m_message_lengths;
 }
 
@@ -621,8 +643,8 @@ NMEA_Messages::~NMEA_Messages(void)
 int NMEA_Messages::checkTag(uint8_t *buffer)
 {
     // TODO
-    
-    
+
+
     return 0;
 }
 
@@ -630,23 +652,34 @@ int NMEA_Messages::checkTag(uint8_t *buffer)
 int NMEA_Messages::extractNMEA(uint8_t *buffer)
 {
     m_rx_time = base::Time::now();
-    
-    // TODO: setup ZDA + GST
-    
+
+    /** GGA **/
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     uint8_t *p_buffer = buffer;
     int ret = data_gga.extractMessage(p_buffer, m_message_lengths[0]);
-    
+
+    /** GST **/
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     p_buffer += m_message_lengths[0];
-    ret = data_avr.extractMessage(p_buffer, m_message_lengths[1]);
-    
+    ret = data_gst.extractMessage(p_buffer, m_message_lengths[1]);
+
+    /** AVR **/
     //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
     p_buffer += m_message_lengths[1];
-    ret = data_hdt.extractMessage(p_buffer, m_message_lengths[2]);
-    
+    ret = data_avr.extractMessage(p_buffer, m_message_lengths[2]);
+
+    /** ZDA **/
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    p_buffer += m_message_lengths[2];
+    ret = data_zda.extractMessage(p_buffer, m_message_lengths[3]);
+
+    /** HDT **/
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    p_buffer += m_message_lengths[3];
+    ret = data_hdt.extractMessage(p_buffer, m_message_lengths[4]);
+
     m_tx_time = base::Time::now();
-    
+
     return ret;
 }
 

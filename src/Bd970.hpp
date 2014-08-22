@@ -48,12 +48,6 @@
 /**
  * 
  */
-#define OK      0
-#define ERROR  -1
-
-#define NMEA_PORT_EMU   "/home/vassilis/ttyV0"
-#define NMEA_PORT       "/dev/ttyXR0"
-#define RTK_PORT        "/dev/ttyXR1"
 
 
 /**
@@ -61,7 +55,13 @@
  */
 namespace trimble_bd970
 {
-    
+    static const int OK = 0;
+    static const int ERROR = -1;
+    static const std::string  NMEA_PORT_EMU =  "/home/vassilis/ttyV0";
+    static const std::string NMEA_PORT = "/dev/ttyXR0";
+    static const std::string RTK_PORT = "/dev/ttyXR1";
+
+
     /**
      * 
      */

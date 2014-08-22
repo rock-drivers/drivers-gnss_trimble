@@ -20,12 +20,11 @@ namespace trimble_bd970
 
     enum GNSS_SOLUTION_TYPES
     {
-        NO_SOLUTION  = 0,
+        INVALID      = 0,
         AUTONOMOUS   = 1,
-        DIFFERENTIAL = 2,
-        INVALID      = 3,
-        RTK_FIXED    = 4,
-        RTK_FLOAT    = 5
+        RTK_FLOAT    = 2,
+        RTK_FIXED    = 3,
+        DIFFERENTIAL = 4
     };
 
     struct Time

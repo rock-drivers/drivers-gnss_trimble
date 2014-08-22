@@ -83,24 +83,24 @@ int NMEA_Base::checksumTest (std::string& message,
     std::stringstream str;
     str << cur_checksum;
     str >> std::hex >> hex_checksum;
-    
+
     /** modify string to remove characters not included in sum **/
     int astr_pos = message.find_last_of('*');
     std::string temp = message.substr(1, (astr_pos - 1));
     int substr_size = temp.size();
-    
+
     /** compute the sum as an XOR between all characters **/
     int i, sum = 0;
     for (i = 0; i < substr_size; ++i)
     {
         sum ^= (int)temp[i];
     }
-    
+
     /** DEBUG helper prints **/
     //std::cout << "Checksum is: " << hex_checksum << std::endl;
     //std::cout << "sum: " << sum << std::endl;
     //std::cout << "temp is: " << temp << std::endl;
-    
+
     /** test to see if the values are correct **/
     if (sum != hex_checksum)
     {

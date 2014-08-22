@@ -37,15 +37,6 @@
 /** BD970 Driver Types **/
 #include <trimble_bd970/NMEABaseTypes.hpp>
 
-
-
-/** CONFIGURATIONS 
- *  
- *  This must be modified to the number of desired NMEA messages from receiver.
- *  
- */
-#define NMEA_MESSAGE_NUM    3
-
 /**
  * 
  * 
@@ -53,6 +44,7 @@
 namespace trimble_bd970
 {
 
+    static const int NMEA_MESSAGE_NUM = 5;
     /**
      * 
      * 
@@ -61,8 +53,10 @@ namespace trimble_bd970
     {
         MSG_NULL  = 0,
         GGA       = 1,
-        PTNL_AVR  = 2,
-        HDT       = 3
+        GST       = 2,
+        PTNL_AVR  = 3,
+        ZDA       = 4,
+        HDT       = 5
     };
 
 
@@ -73,6 +67,9 @@ namespace trimble_bd970
 
     class NMEA_GGA : public NMEA_Base
     {
+        private:
+            static const int NUMBER_OF_FIELD = 15;
+
         public:
 
             //boost::shared_ptr<NMEA_GGA> mp_message;
@@ -109,6 +106,9 @@ namespace trimble_bd970
 
     class NMEA_AVR : public NMEA_Base
     {
+        private:
+            static const int NUMBER_OF_FIELD = 12;
+
         public:
 
             //boost::shared_ptr<NMEA_AVR> mp_message;
@@ -138,6 +138,9 @@ namespace trimble_bd970
 
     class NMEA_HDT : public NMEA_Base
     {
+        private:
+            static const int NUMBER_OF_FIELD = 3;
+
         public:
 
             //boost::shared_ptr<NMEA_HDT> mp_message;
@@ -161,6 +164,9 @@ namespace trimble_bd970
 
     class NMEA_GST : public NMEA_Base
     {
+        private:
+            static const int NUMBER_OF_FIELD = 9;
+
         public:
 
             /** Message Data **/
@@ -189,6 +195,9 @@ namespace trimble_bd970
 
     class NMEA_ZDA : public NMEA_Base
     {
+        private:
+            static const int NUMBER_OF_FIELD = 7;
+
         public:
 
             /** Message Data **/
@@ -213,10 +222,10 @@ namespace trimble_bd970
     };
 
 
-    /** 
-     *  
-     *  
-     *  
+    /**
+     *
+     *
+     *
      */
     class NMEA_Messages
     {

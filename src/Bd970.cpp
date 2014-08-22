@@ -76,7 +76,7 @@ Bd970::Bd970 (int max_packet_size, float sampling_frequency)
     //, m_current_rtk()
     //, RtkTxPort(max_packet_size, sampling_frequency)
 {
-    std::cout << "Creating and initalizing driver object" << std::endl;
+    std::cout << "Creating and initializing driver object" << std::endl;
 
     if(max_packet_size <= 0)
     {
@@ -144,7 +144,8 @@ int Bd970::processNMEA (void)
     /** Find the correct packet bundle and place it in the ports outer buffer.
      * 
      */
-    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    std::cout<<"Num messages: "<< num_msg <<"\n";
 
     for (i = 0; i < num_msg; ++i)
     {
@@ -168,7 +169,6 @@ int Bd970::processNMEA (void)
 
                 start_tag_found = 1;
             }
-
             else
             {
                 //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
@@ -178,18 +178,17 @@ int Bd970::processNMEA (void)
                 nmea_len[i] = packet_size;
                 //printf("@%s, packet_size = %d\n", __FILE__, packet_size);
             }
-        } 
-
-        catch (iodrivers_base::TimeoutError& e ) 
+        }
+        catch (iodrivers_base::TimeoutError& e )
         {
             std::cerr << "TimeoutError buffer size: " << packet_size << "\n";
             return -1;
         }
 
-        p_buffer += packet_size; 
+        p_buffer += packet_size;
     }
 
-    /** Reset the pointer to the beggining of the buffer **/
+    /** Reset the pointer to the beginning of the buffer **/
     p_buffer = NmeaRxPort.m_buffer;
 
 
