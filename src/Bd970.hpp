@@ -37,11 +37,11 @@
 #include <base/Time.hpp>
 
 /** BD970 Driver Types **/
-#include <trimble_bd970/Config.hpp>
-#include <trimble_bd970/NMEATypes.hpp>
-#include <trimble_bd970/SerialPort.hpp>
-#include <trimble_bd970/GNSSTypes.hpp>
-#include <trimble_bd970/Bd970Types.hpp>
+#include <gnss_trimble/Config.hpp>
+#include <gnss_trimble/NMEATypes.hpp>
+#include <gnss_trimble/SerialPort.hpp>
+#include <gnss_trimble/GNSSTypes.hpp>
+#include <gnss_trimble/Bd970Types.hpp>
 
 //#include <ogr_spatialref.h>
 
@@ -53,7 +53,7 @@
 /**
  * 
  */
-namespace trimble_bd970
+namespace gnss_trimble
 {
     static const int OK = 0;
     static const int ERROR = -1;
@@ -100,9 +100,9 @@ namespace trimble_bd970
 
             int printNMEA (void);
 
-            trimble_bd970::Time getTime(void);
+            gnss_trimble::Time getTime(void);
 
-            trimble_bd970::Solution getSolution(void);
+            gnss_trimble::Solution getSolution(void);
 
             int printBufferNMEA (void);
 

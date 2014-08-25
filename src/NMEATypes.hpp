@@ -36,13 +36,13 @@
 #include <base/Time.hpp>
 
 /** BD970 Driver Types **/
-#include <trimble_bd970/NMEABaseTypes.hpp>
+#include <gnss_trimble/NMEABaseTypes.hpp>
 
 /**
  * 
  * 
  */
-namespace trimble_bd970
+namespace gnss_trimble
 {
 
     static const int NMEA_MESSAGE_NUM = 5;

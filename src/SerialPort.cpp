@@ -23,7 +23,7 @@
 
 
 /** DB970 Library header **/
-#include <trimble_bd970/SerialPort.hpp>
+#include <gnss_trimble/SerialPort.hpp>
 
 /** Std C Libraries **/
 #include <stdio.h>
@@ -65,7 +65,7 @@
  */
 using namespace std;
 using namespace boost;
-using namespace trimble_bd970;
+using namespace gnss_trimble;
 
 
 

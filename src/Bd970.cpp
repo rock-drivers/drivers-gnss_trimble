@@ -24,7 +24,7 @@
 
 
 /** DB970 Library header **/
-#include <trimble_bd970/Bd970.hpp>
+#include <gnss_trimble/Bd970.hpp>
 
 /** Std C Libraries **/
 #include <stdio.h>
@@ -63,7 +63,7 @@
  */
 using namespace std;
 using namespace boost;
-using namespace trimble_bd970;
+using namespace gnss_trimble;
 
 
 /**
@@ -206,9 +206,9 @@ int Bd970::printNMEA (void)
     return 0;
 }
 
-trimble_bd970::Time Bd970::getTime(void)
+gnss_trimble::Time Bd970::getTime(void)
 {
-    trimble_bd970::Time current_time;
+    gnss_trimble::Time current_time;
 
     /** Parse the NMEA UTC time into base Time **/
     double fractpart, intpart;
@@ -248,9 +248,9 @@ trimble_bd970::Time Bd970::getTime(void)
 }
 
 
-trimble_bd970::Solution Bd970::getSolution(void)
+gnss_trimble::Solution Bd970::getSolution(void)
 {
-    trimble_bd970::Solution gnss_solution;
+    gnss_trimble::Solution gnss_solution;
 
 
     gnss_solution.time = base::Time::now();

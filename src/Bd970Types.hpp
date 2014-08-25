@@ -3,7 +3,7 @@
 
 
 
-namespace trimble_bd970
+namespace gnss_trimble
 {
     enum BD970_FIRMWARE_OPTIONS
     {

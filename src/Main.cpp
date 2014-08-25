@@ -31,11 +31,11 @@
 #include <sys/types.h>
 
 /** DB970 library header **/
-#include <trimble_bd970/Bd970.hpp>
+#include <gnss_trimble/Bd970.hpp>
 
 
 using namespace std;
-using namespace trimble_bd970;
+using namespace gnss_trimble;
 
 /**
 * SIGNAL      ID   DEFAULT  DESCRIPTION

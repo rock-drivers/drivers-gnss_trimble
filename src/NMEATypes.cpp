@@ -22,8 +22,8 @@
  */
 
 /** NMEA Types Header **/
-#include <trimble_bd970/NMEATypes.hpp>
-#include <trimble_bd970/GNSSTypes.hpp>
+#include <gnss_trimble/NMEATypes.hpp>
+#include <gnss_trimble/GNSSTypes.hpp>
 
 /** Std C Libraries **/
 #include <stdio.h>
@@ -60,7 +60,7 @@
 
 using namespace std;
 using namespace boost;
-using namespace trimble_bd970;
+using namespace gnss_trimble;
 
 
 

@@ -1,5 +1,5 @@
 <package>
-  <description brief="ROCK driver library for the BD970 GNSS receiver from Tribmle Ltd.">
+  <description brief="ROCK driver library for the GNSS receivers from Trimble Ltd.">
   This driver provides the interface for using the Tribmle bd90 receiver. The 
   driver reads data sent by a GNSS receiver using NMEA protocol.
   </description>

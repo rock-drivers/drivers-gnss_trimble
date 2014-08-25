@@ -22,14 +22,14 @@
  */
 
 
-#ifndef _BD970_CONFIG_HPP_
-#define _BD970_CONFIG_HPP_
+#ifndef _GNSS_TRIMBLE_CONFIG_HPP_
+#define _GNSS_TRIMBLE_CONFIG_HPP_
 
 /** Std headers **/
 #include <stdint.h>
 
 
-namespace trimble_bd970
+namespace gnss_trimble
 {
     /**
      * 
@@ -55,4 +55,4 @@ namespace trimble_bd970
     };
 }
 
-#endif // _BD970_CONFIG_HPP_
+#endif // _GNSS_TRIMBLE_CONFIG_HPP_

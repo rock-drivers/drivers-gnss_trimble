@@ -38,15 +38,15 @@
 #include <iodrivers_base/Driver.hpp>
 
 /** BD970 Driver Types **/
-#include <trimble_bd970/Config.hpp>
-#include <trimble_bd970/NMEATypes.hpp>
+#include <gnss_trimble/Config.hpp>
+#include <gnss_trimble/NMEATypes.hpp>
 
 
 
 /**
  * 
  */
-namespace trimble_bd970
+namespace gnss_trimble
 {
     
     

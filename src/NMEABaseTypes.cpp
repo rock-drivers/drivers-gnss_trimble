@@ -23,7 +23,7 @@
 
 
 /** NMEA Base Types Header **/
-#include <trimble_bd970/NMEABaseTypes.hpp>
+#include <gnss_trimble/NMEABaseTypes.hpp>
 
 /** Std C Libraries **/
 #include <stdio.h>
@@ -43,7 +43,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-using namespace trimble_bd970;
+using namespace gnss_trimble;
 using namespace std;
 
 /**

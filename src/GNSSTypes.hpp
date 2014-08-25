@@ -14,7 +14,7 @@
 /**
  *
  */
-namespace trimble_bd970
+namespace gnss_trimble
 {
 
     enum GNSS_SOLUTION_TYPES
@@ -136,7 +136,7 @@ namespace trimble_bd970
     struct SatelliteInfo
     {
         base::Time time;
-        std::vector < trimble_bd970::Satellite> knownSatellites;
+        std::vector < gnss_trimble::Satellite> knownSatellites;
     };
 
     struct UserDynamics
@@ -159,8 +159,8 @@ namespace trimble_bd970
 
     struct ConstellationInfo
     {
-        trimble_bd970::SolutionQuality quality;
-        trimble_bd970::SatelliteInfo  satellites;
+        gnss_trimble::SolutionQuality quality;
+        gnss_trimble::SatelliteInfo  satellites;
     };
 
 }

@@ -36,7 +36,7 @@
 #include <base/Time.hpp>
 
 /** BD970 Driver Types **/
-#include <trimble_bd970/Config.hpp>
+#include <gnss_trimble/Config.hpp>
 
 
 
@@ -44,7 +44,7 @@
  * 
  * 
  */
-namespace trimble_bd970
+namespace gnss_trimble
 {
     /** NMEA messages sent over the serial port are prefixed with '$', which
      * in ASCII is 0x24.
