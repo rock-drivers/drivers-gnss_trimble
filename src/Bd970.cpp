@@ -214,6 +214,8 @@ trimble_bd970::Time Bd970::getTime(void)
     double fractpart, intpart;
     fractpart = modf(m_current_nmea.data_zda.utc, &intpart);
 
+    //std::cout<<"intpart: " << intpart <<" fractpart: "<< fractpart <<"\n";
+
     /** Integer forms **/
     std::vector<int> utc_int_parts;
     int int_hh_mm_ss = static_cast<int>(intpart);
@@ -229,8 +231,11 @@ trimble_bd970::Time Bd970::getTime(void)
     utc_int_parts.insert(utc_int_parts.begin(), int_hh_mm_ss % 100); //hours
     int_hh_mm_ss = int_hh_mm_ss / 100;
 
-    base::Time utc_time;
-    utc_time.fromTimeValues(m_current_nmea.data_zda.year, m_current_nmea.data_zda.month,
+    /*std::cout<<"TIME FROM VALUES: YEAR "<<m_current_nmea.data_zda.year<<" MONTH "<< m_current_nmea.data_zda.month <<
+                " DAY " << m_current_nmea.data_zda.day << " HOUR " <<utc_int_parts[0] << " MINUTES "<< utc_int_parts[1] <<
+                " SECONDS " << utc_int_parts[2] << " MILLIS "<< int_millis << "\n";*/
+
+    base::Time utc_time = base::Time::fromTimeValues(m_current_nmea.data_zda.year, m_current_nmea.data_zda.month,
                             m_current_nmea.data_zda.day, utc_int_parts[0], utc_int_parts[1],
                             utc_int_parts[2], int_millis, 0);
 
