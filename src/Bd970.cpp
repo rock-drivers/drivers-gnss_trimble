@@ -267,9 +267,9 @@ gnss_trimble::Solution Bd970::getSolution(void)
     {
         case 0: gnss_solution.positionType = NO_SOLUTION; break;
         case 1: gnss_solution.positionType = AUTONOMOUS; break;
-        case 2: gnss_solution.positionType = RTK_FLOAT; break;
-        case 3: gnss_solution.positionType = RTK_FIXED; break;
-        case 4: gnss_solution.positionType = DIFFERENTIAL; break;
+        case 2: gnss_solution.positionType = DIFFERENTIAL; break;
+        case 4: gnss_solution.positionType = RTK_FIXED; break;
+        case 5: gnss_solution.positionType = RTK_FLOAT; break;
         default: gnss_solution.positionType = INVALID; break;
     }
     gnss_solution.noOfSatellites = m_current_nmea.data_gga.num_sat_vehicles;
