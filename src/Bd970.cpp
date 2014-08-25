@@ -265,7 +265,7 @@ trimble_bd970::Solution Bd970::getSolution(void)
         case 4: gnss_solution.positionType = DIFFERENTIAL; break;
         default: gnss_solution.positionType = INVALID; break;
     }
-    gnss_solution.noOfSatellites = m_current_nmea.data_avr.num_sat_vehicles;
+    gnss_solution.noOfSatellites = m_current_nmea.data_gga.num_sat_vehicles;
     gnss_solution.altitude =  m_current_nmea.data_gga.orthom_height;
     gnss_solution.geoidalSeparation = m_current_nmea.data_gga.geoid_separation;
     gnss_solution.ageOfDifferentialCorrections = m_current_nmea.data_gga.dgps_age;

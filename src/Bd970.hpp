@@ -92,9 +92,7 @@ namespace trimble_bd970
 
             ~Bd970(void);
 
-
             void Greeting (void);
-
 
             int setupNMEA (std::string const& filename, int baudrate);
 
@@ -120,6 +118,7 @@ namespace trimble_bd970
             //
             //
         private:
+
             double interpretAngle(double const &value, const bool positive);
 
     };
