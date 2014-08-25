@@ -242,6 +242,36 @@ trimble_bd970::Time Bd970::getTime(void)
     return current_time;
 }
 
+
+trimble_bd970::Solution Bd970::getSolution(void)
+{
+    trimble_bd970::Solution gnss_solution;
+
+
+    gnss_solution.time = base::Time::now();
+    gnss_solution.latitude = m_current_nmea.data_gga.latitude;
+    gnss_solution.longitude = m_current_nmea.data_gga.longitude;
+    switch (m_current_nmea.data_avr.gps_quality)
+    {
+        case 0: gnss_solution.positionType = NO_SOLUTION; break;
+        case 1: gnss_solution.positionType = AUTONOMOUS; break;
+        case 2: gnss_solution.positionType = RTK_FLOAT; break;
+        case 3: gnss_solution.positionType = RTK_FIXED; break;
+        case 4: gnss_solution.positionType = DIFFERENTIAL; break;
+        default: gnss_solution.positionType = INVALID; break;
+    }
+    gnss_solution.noOfSatellites = m_current_nmea.data_avr.num_sat_vehicles;
+    gnss_solution.altitude =  m_current_nmea.data_gga.orthom_height;
+    gnss_solution.geoidalSeparation = m_current_nmea.data_gga.geoid_separation;
+    gnss_solution.ageOfDifferentialCorrections = m_current_nmea.data_gga.dgps_age;
+
+    gnss_solution.deviationLatitude = m_current_nmea.data_gst.latitude_sigma_error;
+    gnss_solution.deviationLongitude = m_current_nmea.data_gst.longitude_sigma_error;
+    gnss_solution.deviationAltitude = m_current_nmea.data_gst.height_sigma_error;
+
+    return gnss_solution;
+}
+
 int Bd970::printBufferNMEA (void)
 {
     NmeaRxPort.printBuffer();

@@ -76,17 +76,17 @@ typedef vector< string > split_vector_type;
 */
 NMEA_GGA::NMEA_GGA(void)
     : NMEA_Base(-1, NMEA_GGA::NUMBER_OF_FIELD)
-    , utc(-1)
-    , latitude(0)
+    , utc(base::NaN<double>())
+    , latitude(base::NaN<double>())
     , lat_dir("~")
-    , longtitude(0)
+    , longitude(base::NaN<double>())
     , long_dir("~")
     , gps_quality(-1)
-    , num_sat_vehicles(0)
-    , hdop(0)
-    , orthom_height(0)
-    , geoid_separation(0)
-    , dgps_age(-1)
+    , num_sat_vehicles(base::NaN<double>())
+    , hdop(base::NaN<double>())
+    , orthom_height(base::NaN<double>())
+    , geoid_separation(base::NaN<double>())
+    , dgps_age(base::NaN<double>())
     , ref_station_id(-1)
 {
 }
@@ -140,7 +140,7 @@ int NMEA_GGA::extractMessage(uint8_t *buffer, int message_len)
 
         if(i == 4)
         {
-            longtitude = strtod(SplitVec[i].c_str(), 0);
+            longitude = strtod(SplitVec[i].c_str(), 0);
         }
 
         if(i == 5)
@@ -194,9 +194,9 @@ int NMEA_GGA::printMessage(void)
     std::cout << std::endl;
 
     std::cout << "UTC: " << utc << std::endl;
-    std::cout << "LAT: " << latitude << std::endl;
+    std::cout << "LATITUDE: " << latitude << std::endl;
     std::cout << "LATDIR: " << lat_dir << std::endl;
-    std::cout << "LONG: " << longtitude << std::endl;
+    std::cout << "LONGITUDE: " << longitude << std::endl;
     std::cout << "LONGDIR: " << long_dir << std::endl;
     std::cout << "GPS_QUAL: " << gps_quality << std::endl;
     std::cout << "SATs: " << num_sat_vehicles << std::endl;
@@ -217,13 +217,13 @@ int NMEA_GGA::printMessage(void)
 */
 NMEA_AVR::NMEA_AVR(void)
     : NMEA_Base(-1,NMEA_AVR::NUMBER_OF_FIELD)
-    , utc(0)
-    , yaw(0)
-    , tilt(0)
-    , range(0)
-    , gps_quality(0)
-    , pdop(0)
-    , num_sat_vehicles(0)
+    , utc(base::NaN<double>())
+    , yaw(base::NaN<double>())
+    , tilt(base::NaN<double>())
+    , range(base::NaN<double>())
+    , gps_quality(-1)
+    , pdop(base::NaN<double>())
+    , num_sat_vehicles(-1)
 {
 }
 
@@ -322,7 +322,7 @@ int NMEA_AVR::printMessage(void)
 */
 NMEA_HDT::NMEA_HDT(void)
     : NMEA_Base(-1, NMEA_HDT::NUMBER_OF_FIELD)
-    , heading(0)
+    , heading(base::NaN<double>())
     , heading_dir("~")
 {
 }
@@ -394,14 +394,14 @@ int NMEA_HDT::printMessage(void)
 */
 NMEA_GST::NMEA_GST(void)
     : NMEA_Base(-1, NMEA_GST::NUMBER_OF_FIELD)
-    , utc(0)
-    , rms(0)
-    , semi_major_axis_sigma_error(0)
-    , semi_minor_axis_sigma_error(0)
-    , heading_sigma_error(0)
-    , latitude_sigma_error(0)
-    , longitude_sigma_error(0)
-    , height_sigma_error(0)
+    , utc(base::NaN<double>())
+    , rms(base::NaN<double>())
+    , semi_major_axis_sigma_error(base::NaN<double>())
+    , semi_minor_axis_sigma_error(base::NaN<double>())
+    , heading_sigma_error(base::NaN<double>())
+    , latitude_sigma_error(base::NaN<double>())
+    , longitude_sigma_error(base::NaN<double>())
+    , height_sigma_error(base::NaN<double>())
 {
 }
 
@@ -515,12 +515,12 @@ int NMEA_GST::printMessage(void)
 */
 NMEA_ZDA::NMEA_ZDA(void)
     : NMEA_Base(-1, NMEA_ZDA::NUMBER_OF_FIELD)
-    , utc(0)
-    , day(0)
-    , month(0)
-    , year(0)
-    , gmt_hours_offset(0)
-    , gmt_minutes_offset(0)
+    , utc(base::NaN<double>())
+    , day(-1)
+    , month(-1)
+    , year(-1)
+    , gmt_hours_offset(-1)
+    , gmt_minutes_offset(-1)
 {
 }
 

@@ -104,6 +104,8 @@ namespace trimble_bd970
 
             trimble_bd970::Time getTime(void);
 
+            trimble_bd970::Solution getSolution(void);
+
             int printBufferNMEA (void);
 
             int closeNMEA (void);

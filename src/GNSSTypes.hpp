@@ -7,20 +7,20 @@
 #endif
 
 /**
- * 
+ *
  */
-//#include <vector>
 #include <base/time.h>
 
 /**
- * 
+ *
  */
-namespace trimble_bd970 
+namespace trimble_bd970
 {
 
     enum GNSS_SOLUTION_TYPES
     {
-        INVALID      = 0,
+        INVALID      = -1,
+        NO_SOLUTION  = 0,
         AUTONOMOUS   = 1,
         RTK_FLOAT    = 2,
         RTK_FIXED    = 3,
@@ -58,7 +58,7 @@ namespace trimble_bd970
 #endif
     };
 
-    struct Position 
+    struct Position
     {
         base::Time time;
         double latitude;
@@ -80,7 +80,7 @@ namespace trimble_bd970
 
     };
 
-    struct Errors 
+    struct Errors
     {
         base::Time time;
         double deviationLatitude;
@@ -88,7 +88,7 @@ namespace trimble_bd970
         double deviationAltitude;
     };
 
-    struct SolutionQuality 
+    struct SolutionQuality
     {
         base::Time time;
         std::vector<int> usedSatellites;
@@ -97,7 +97,7 @@ namespace trimble_bd970
         double vdop;
     };
 
-    enum CONSTELLATIONS 
+    enum CONSTELLATIONS
     {
         CONSTELLATION_GPS,
         CONSTELLATION_GALILEO,
@@ -105,7 +105,7 @@ namespace trimble_bd970
         CONSTELLATION_GLONASS
     };
 
-    struct Satellite 
+    struct Satellite
     {
         int PRN;
         int elevation;
@@ -133,13 +133,13 @@ namespace trimble_bd970
 
     };
 
-    struct SatelliteInfo 
+    struct SatelliteInfo
     {
         base::Time time;
         std::vector < trimble_bd970::Satellite> knownSatellites;
     };
 
-    struct UserDynamics 
+    struct UserDynamics
     {
         int hSpeed;
         int hAccel;
@@ -157,7 +157,7 @@ namespace trimble_bd970
 #endif
     };
 
-    struct ConstellationInfo 
+    struct ConstellationInfo
     {
         trimble_bd970::SolutionQuality quality;
         trimble_bd970::SatelliteInfo  satellites;

@@ -32,6 +32,7 @@
 #include <stdint.h>
 
 /** Rock Std types **/
+#include <base/Float.hpp>
 #include <base/Time.hpp>
 
 /** BD970 Driver Types **/
@@ -80,7 +81,7 @@ namespace trimble_bd970
             double      latitude;
             std::string lat_dir;
 
-            double      longtitude;
+            double      longitude;
             std::string long_dir;
 
             int         gps_quality;
