@@ -57,6 +57,13 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
+#ifndef D2R
+#define D2R M_PI/180.00 /** Convert degree to radian **/
+#endif
+#ifndef R2D
+#define R2D 180.00/M_PI /** Convert radian to degree **/
+#endif
+
 
 /**
  * 
@@ -112,16 +119,16 @@ int Bd970::setupNMEA (std::string const& filename, int baudrate)
 {
     Greeting();
     NmeaRxPort.Greeting();
-    
+
     NmeaRxPort.setBaudRate(baudrate);
-    
+
     if (!NmeaRxPort.openPort(filename))
     {
         cerr << "setupNMEA: Cannot open device: " << filename << endl;
         perror("errno is: ");
         return -1;
     }
-    
+
     return 0;
 }
 
@@ -276,6 +283,32 @@ gnss_trimble::Solution Bd970::getSolution(void)
 
     return gnss_solution;
 }
+
+Eigen::Quaternion<double> Bd970::getOrientation(void)
+{
+    Eigen::Quaternion<double> orientation;
+
+    /** Get the yaw with respect to the north **/
+    orientation = Eigen::Quaternion <double>(
+        Eigen::AngleAxisd(m_current_nmea.data_hdt.heading * D2R, Eigen::Vector3d::UnitZ())*
+        Eigen::AngleAxisd(0.00, Eigen::Vector3d::UnitY()) *
+        Eigen::AngleAxisd(0.00, Eigen::Vector3d::UnitX()));
+
+    return orientation;
+}
+
+Eigen::Matrix3d Bd970::getOrientationUncertainty(void)
+{
+    Eigen::Matrix3d orientation_uncertainty;
+
+    /** Get the yaw with respect to the north **/
+    Eigen::Vector3d variance;
+    variance << 0.00, 0.00, (m_current_nmea.data_gst.heading_sigma_error*m_current_nmea.data_gst.heading_sigma_error);
+    orientation_uncertainty = variance.array().matrix().asDiagonal();
+
+    return orientation_uncertainty;
+}
+
 
 double Bd970::interpretAngle(double const &value, const bool positive)
 {

@@ -147,7 +147,7 @@ namespace gnss_trimble
             //boost::shared_ptr<NMEA_HDT> mp_message;
 
             /** Message Data **/
-            double      heading;
+            double      heading; //in degrees
             std::string heading_dir;
 
 

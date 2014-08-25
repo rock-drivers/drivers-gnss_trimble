@@ -33,6 +33,10 @@
 /** Std C Libraries **/
 #include <stdint.h>
 
+/** Eigen Library **/
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+
 /** Rock Std types **/
 #include <base/Time.hpp>
 
@@ -103,6 +107,10 @@ namespace gnss_trimble
             gnss_trimble::Time getTime(void);
 
             gnss_trimble::Solution getSolution(void);
+
+            Eigen::Quaternion<double> getOrientation(void);
+
+            Eigen::Matrix3d getOrientationUncertainty(void);
 
             int printBufferNMEA (void);
 
