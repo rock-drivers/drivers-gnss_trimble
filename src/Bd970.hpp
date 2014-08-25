@@ -117,6 +117,10 @@ namespace trimble_bd970
             //int sendRTK (void);
             //
             //int printRTK (void);
+            //
+            //
+        private:
+            double interpretAngle(double const &value, const bool positive);
 
     };
 

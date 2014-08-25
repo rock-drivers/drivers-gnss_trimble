@@ -254,9 +254,9 @@ trimble_bd970::Solution Bd970::getSolution(void)
 
 
     gnss_solution.time = base::Time::now();
-    gnss_solution.latitude = m_current_nmea.data_gga.latitude;
-    gnss_solution.longitude = m_current_nmea.data_gga.longitude;
-    switch (m_current_nmea.data_avr.gps_quality)
+    gnss_solution.latitude = interpretAngle(m_current_nmea.data_gga.latitude, m_current_nmea.data_gga.lat_dir == "N");
+    gnss_solution.longitude = interpretAngle(m_current_nmea.data_gga.longitude, m_current_nmea.data_gga.long_dir == "E");
+    switch (m_current_nmea.data_gga.gps_quality)
     {
         case 0: gnss_solution.positionType = NO_SOLUTION; break;
         case 1: gnss_solution.positionType = AUTONOMOUS; break;
@@ -276,6 +276,17 @@ trimble_bd970::Solution Bd970::getSolution(void)
 
     return gnss_solution;
 }
+
+double Bd970::interpretAngle(double const &value, const bool positive)
+{
+    double angle = value;
+    double minutes = fmod(angle, 100);
+    angle = static_cast<int>(angle / 100) + minutes / 60.0;
+    if (!positive)
+        angle = -angle;
+    return angle;
+}
+
 
 int Bd970::printBufferNMEA (void)
 {
