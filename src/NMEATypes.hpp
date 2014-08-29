@@ -174,14 +174,14 @@ namespace gnss_trimble
             double utc;
             double rms;
 
-            double semi_major_axis_sigma_error; // 1-sigma in meters
-            double semi_minor_axis_sigma_error; // 1-sigma in meters
+            double semi_major_axis_sigma_error; // 1-sigma in meters (standard deviation)
+            double semi_minor_axis_sigma_error; // 1-sigma in meters (standard deviation)
 
-            double heading_sigma_error; //1-sigma in degrees
+            double heading_sigma_error; //1-sigma in degrees (standard deviation)
 
-            double latitude_sigma_error; //1-sigma in meters
-            double longitude_sigma_error; //1-sigma in meters
-            double height_sigma_error; //1-sigma in meters
+            double latitude_sigma_error; //1-sigma in meters (standard deviation)
+            double longitude_sigma_error; //1-sigma in meters (standard deviation)
+            double height_sigma_error; //1-sigma in meters (standard deviation)
 
             NMEA_GST(void);
 

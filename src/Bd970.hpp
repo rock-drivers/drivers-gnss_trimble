@@ -108,6 +108,8 @@ namespace gnss_trimble
 
             gnss_trimble::Solution getSolution(void);
 
+            Eigen::Matrix3d getPositionUncertainty(void);
+
             Eigen::Quaternion<double> getOrientation(void);
 
             Eigen::Matrix3d getOrientationUncertainty(void);
