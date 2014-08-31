@@ -694,7 +694,7 @@ int NMEA_Messages::printMessages(void)
     data_zda.printMessage();
     data_hdt.printMessage();
 
-    int64_t process_time = m_tx_time.toMicroseconds() - m_rx_time.toMicroseconds();
+    this->process_time = m_tx_time.toMicroseconds() - m_rx_time.toMicroseconds();
 
     std::cout << "NMEA processing time (usec) is: " << process_time << std::endl;
 
