@@ -3,15 +3,16 @@
   This driver provides the interface for using the Tribmle bd90 receiver. The 
   driver reads data sent by a GNSS receiver using NMEA protocol.
   </description>
-  
+
   <author>Vassilios Tsounis/vastsoun@gmail.com</author>
   <author>Javier Hidalgo Carrio/havyhidalgo@gmail.com</author>
-  
+  <maintainer>Martin Azkarate/Martin.Azkarate@esa.int</maintainer>
+
   <license>GPLv3</license>
-  
+
   <url>http://rock-robotics.org</url>
-  <logo>http://</logo>
-  
+  <url>http://www.trimble.com</url>
+
   <depend package="base/cmake" />
   <depend package="base/types" />
   <depend package="drivers/iodrivers_base" />
