@@ -151,8 +151,8 @@ int Bd970::processNMEA (void)
     /** Find the correct packet bundle and place it in the ports outer buffer.
      * 
      */
-    printf("@%s, LINE: %d\n", __FILE__, __LINE__);
-    std::cout<<"Num messages: "<< num_msg <<"\n";
+    //printf("@%s, LINE: %d\n", __FILE__, __LINE__);
+    //std::cout<<"Num messages: "<< num_msg <<"\n";
 
     for (i = 0; i < num_msg; ++i)
     {
