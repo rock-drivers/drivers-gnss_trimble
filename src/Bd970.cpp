@@ -188,7 +188,7 @@ int Bd970::processNMEA (void)
         }
         catch (iodrivers_base::TimeoutError& e )
         {
-            std::cerr << "TimeoutError buffer size: " << packet_size << "\n";
+            std::cerr << "GNSS: TimeoutError buffer size: " << packet_size << "\n";
             return -1;
         }
 
