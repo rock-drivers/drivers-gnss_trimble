@@ -340,8 +340,8 @@ int NMEA_HDT::extractMessage(uint8_t *buffer, int message_len)
     split_vector_type SplitVec;
     split( SplitVec, input, is_any_of(",*") );
 
-    std::cout<<"SplitVec.size(): "<<SplitVec.size()<<"\n";
-    std::cout<<"SplitVec contains "<<SplitVec[SplitVec.size()-1]<<"\n";
+    //std::cout<<"SplitVec.size(): "<<SplitVec.size()<<"\n";
+    //std::cout<<"SplitVec contains "<<SplitVec[SplitVec.size()-1]<<"\n";
     /** checksum test **/
     int test = checksumTest (input, SplitVec[SplitVec.size()-1], "HDT");
     if (test != 0)
